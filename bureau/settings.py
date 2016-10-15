@@ -103,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'de'
 
 TIME_ZONE = 'UTC'
 
@@ -118,3 +118,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = BASE_DIR + '/static'
+
+LOCALE_PATHS = (
+    BASE_DIR + '/locale', )
+
+LOGIN_URL = '/admin/login/'

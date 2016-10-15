@@ -17,5 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'^people/', include('people.urls')),
     url(r'^admin/', admin.site.urls),
 ]
+
+admin.site.site_header = "Infinita Bureau"
