@@ -23,6 +23,10 @@ class StudentAdmin(admin.ModelAdmin):
 admin.site.register(Student, StudentAdmin)
 
 
+class StudentInline(admin.TabularInline):
+    extra = 0
+    model = Student
+
 class PhoneNumberInline(admin.TabularInline):
     extra = 0
     model = PhoneNumber
@@ -58,6 +62,7 @@ export_csv.short_description = _("Export CSV")
 class ContactAdmin(admin.ModelAdmin):
     model = Contact
     inlines = [
+        StudentInline,
         PhoneNumberInline,
         EMailAddressInline
     ]

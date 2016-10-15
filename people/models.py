@@ -38,7 +38,6 @@ class Student(models.Model):
     family = models.ForeignKey(Contact, 
                 on_delete=models.CASCADE, 
                 verbose_name=_("Family"), 
-                related_name=_("Students"), 
                 limit_choices_to={"kind":"fam"})
 
     def __str__(self):
@@ -68,4 +67,4 @@ class EMailAddress(models.Model):
     description = models.CharField(_("Description"), max_length=200, blank=True)
 
     def __str__(self):
-        return self.number
+        return self.address

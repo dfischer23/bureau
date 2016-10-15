@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-09 00:09+0200\n"
+"POT-Creation-Date: 2016-10-15 20:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,103 +18,106 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: people/admin.py:31
-msgid "ID"
-msgstr ""
-
-#: people/admin.py:32 people/models.py:16
+#: people/admin.py:17 people/admin.py:49 people/models.py:18
 msgid "Name"
 msgstr "Name"
 
-#: people/admin.py:33 people/models.py:49
+#: people/admin.py:21
+#, fuzzy
+#| msgid "Family"
+msgid "Familie"
+msgstr "Familie"
+
+#: people/admin.py:48
+msgid "ID"
+msgstr ""
+
+#: people/admin.py:50 people/models.py:51
 msgid "Phone Numbers"
 msgstr "Telefonnummern"
 
-#: people/admin.py:42
+#: people/admin.py:59
 msgid "Export CSV"
 msgstr "CSV Exportieren"
 
-#: people/models.py:6 people/models.py:51 people/models.py:64
+#: people/models.py:8 people/models.py:53 people/models.py:66
 msgid "Contact"
 msgstr "Kontakt"
 
-#: people/models.py:7
+#: people/models.py:9
 msgid "Contacts"
 msgstr "Kontakte"
 
-#: people/models.py:10
+#: people/models.py:12
 msgid "Other"
 msgstr "Andere"
 
-#: people/models.py:11 people/models.py:38
+#: people/models.py:13 people/models.py:40
 msgid "Family"
 msgstr "Familie"
 
-#: people/models.py:12
+#: people/models.py:14
 msgid "Company"
 msgstr "Firma"
 
-#: people/models.py:13
+#: people/models.py:15
 msgid "Organization"
 msgstr "Organisation/Amt/etc"
 
-#: people/models.py:17
+#: people/models.py:19
 msgid "Kind"
 msgstr "Art"
 
-#: people/models.py:19
+#: people/models.py:21
 msgid "Street Address"
 msgstr "Straße"
 
-#: people/models.py:20
+#: people/models.py:22
 msgid "Postal Code"
 msgstr "PLZ"
 
-#: people/models.py:21
+#: people/models.py:23
 msgid "City"
 msgstr "Ort"
 
-#: people/models.py:22
+#: people/models.py:24
 msgid "Country"
 msgstr "Land"
 
-#: people/models.py:30
+#: people/models.py:32
 msgid "Student"
 msgstr "SchülerIn"
 
-#: people/models.py:31 people/models.py:39
+#: people/models.py:33 people/models.py:41
 msgid "Students"
 msgstr "SchülerInnen"
 
-#: people/models.py:33
+#: people/models.py:35
 msgid "First Name"
 msgstr "Vorname"
 
-#: people/models.py:34
+#: people/models.py:36
 msgid "Last Name"
 msgstr "Nachname"
 
-#: people/models.py:48 people/models.py:52
+#: people/models.py:50 people/models.py:54
 msgid "Phone Number"
 msgstr "Telefonnummer"
 
-#: people/models.py:53 people/models.py:66
+#: people/models.py:55 people/models.py:68
 msgid "Description"
 msgstr "Beschreibung"
 
-#: people/models.py:61
+#: people/models.py:63
 msgid "EMail Address"
 msgstr "EMail-Adresse"
 
-#: people/models.py:62
+#: people/models.py:64
 msgid "EMailAddresses"
 msgstr "EMail-Adressen"
 
-#: people/models.py:65
+#: people/models.py:67
 #, fuzzy
 #| msgid "Street Address"
 msgid "Address"
 msgstr "Straße"
-
-#~ msgid "Hi there!"
-#~ msgstr "Hallo da!"
