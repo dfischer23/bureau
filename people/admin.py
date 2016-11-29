@@ -6,97 +6,153 @@ from django.utils.translation import ugettext as _
 
 from .models import *
 
+from datetime import date
 
 class StudentAdmin(admin.ModelAdmin):
     model = Student
-    list_display = ("get_full_name", "get_family")
-    search_fields = ["first_name", "last_name"]
+    list_display = ("name", "first_name")
+    search_fields = ["first_name", "name"]
+    filter_horizontal = ("guardians",)
+    readonly_fields = ("guardians_links","calc_level")
+
+    fieldsets = (
+    	(None, {
+    		"fields": ("name", "first_name", "dob", "pob", "address", "guardians_links")
+    		}),
+    	(_("Class Level"), {
+    		"fields":(
+    			"first_enrollment",
+    			"calc_level",
+    			"level_ofs", "level_ref"
+    		)}),
+    	(_("Formalities"), {
+    		"classes":("collapse",),
+    		"fields":(
+    			"gender",
+    			"entry_nr", "contract_nr", 
+    			"citizenship", "denomination",
+    			"privacy_policy_agreement", "vaccination_policy_agreement", "is_sibling"
+    		)}),
+    	(_("Edit Guardians"), {
+    		"classes":("collapse",),
+    		"fields": (
+    			"guardians",
+    		)})
+    	)
+
+    def guardians_links(self, obj):
+        guardians = obj.guardians.all()
+
+        links = [];
+        for guardian in guardians:
+        	change_url = urlresolvers.reverse("admin:people_contact_change", args=(guardian.id,))
+        	links.append('<a href="%s">%s</a>' % (change_url, guardian))
+        return format_html("<br>".join(links));
+    guardians_links.short_description = _("Guardians")
 
     def get_full_name(self, obj):
-        return obj.first_name + " " + obj.last_name;
+        return obj.first_name + " " + obj.name;
     get_full_name.short_description = _("Name")
 
-    def get_family(self, obj):
-        return obj.family.name;
-    get_family.short_description = _("Familie")
+    def calc_level(self, obj):
+    	if not obj.level_ref or not obj.level_ofs:
+    		return "N/A"
+    	today = date.today();
+    	current_year = today.year-1 if today.month < 8 else today.year
+    	level =  current_year - (int(obj.level_ref) - int(obj.level_ofs))
+    	return("%i (for %i/%i)" % (level, current_year, current_year+1));
+        #return "%i//%i" % (obj.level_ref, obj.level_ofs);
+    calc_level.short_description = _("Class Level")
 
 admin.site.register(Student, StudentAdmin)
 
 
-class StudentInline(admin.TabularInline):
+class ContactInline(admin.TabularInline):
+    extra = 0
+    model = Contact
+#    classes = ["collapse"]
+
+class StudentAddressInline(admin.TabularInline):
     extra = 0
     model = Student
-
-class PhoneNumberInline(admin.TabularInline):
-    extra = 0
-    model = PhoneNumber
-
-class EMailAddressInline(admin.TabularInline):
-    extra = 0
-    model = EMailAddress
+    fields = ("name", "first_name")
 
 
-
-def export_csv(modeladmin, request, queryset):
-    import csv
-    from django.utils.encoding import smart_str
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=test.csv'
-    writer = csv.writer(response, csv.excel)
-    response.write(u'\ufeff'.encode('utf8'))
-    writer.writerow([
-        smart_str(_("ID")),
-        smart_str(_("Name")),
-        smart_str(_("Phone Numbers")),
-    ])
-    for obj in queryset:
-        writer.writerow([
-            smart_str(obj.pk),
-            smart_str(obj.name),
-            smart_str(obj.phonenumber_set.all())
-        ])
-    return response
-export_csv.short_description = _("Export CSV")
+# def export_csv(modeladmin, request, queryset):
+#     import csv
+#     from django.utils.encoding import smart_str
+#     response = HttpResponse(content_type='text/csv')
+#     response['Content-Disposition'] = 'attachment; filename=test.csv'
+#     writer = csv.writer(response, csv.excel)
+#     response.write(u'\ufeff'.encode('utf8'))
+#     writer.writerow([
+#         smart_str(_("ID")),
+#         smart_str(_("Name")),
+#         smart_str(_("Phone Numbers")),
+#     ])
+#     for obj in queryset:
+#         writer.writerow([
+#             smart_str(obj.pk),
+#             smart_str(obj.name),
+#             smart_str(obj.phonenumber_set.all())
+#         ])
+#     return response
+# export_csv.short_description = _("Export CSV")
 
 
 class ContactAdmin(admin.ModelAdmin):
     model = Contact
-    inlines = [
-        StudentInline,
-        PhoneNumberInline,
-        EMailAddressInline
-    ]
-    actions = [export_csv]
-    list_display = ("name","kind","city","country")
+    list_display = ("name","first_name","kind","phone_number","cellphone_number","email_address")
     search_fields = ["name"]
     list_filter = ("kind",)
+    readonly_fields = ("student_links",)
+
+    fieldsets = (
+        (None, {
+            "fields": ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "student_links")
+            }),
+        );
+
+    def student_links(self, obj):
+        students = obj.students.all()
+
+        links = [];
+        for student in students:
+            change_url = urlresolvers.reverse("admin:people_student_change", args=(student.id,))
+            links.append('<a href="%s">%s</a>' % (change_url, student))
+        return format_html("<br>".join(links));
+    student_links.short_description = _("Students")
 
 admin.site.register(Contact, ContactAdmin)
 
 
-#class FamilyAdmin(admin.ModelAdmin):
-#    model = Family
+class AddressAdmin(admin.ModelAdmin):
+    model = Address
 #    inlines = [
-#        PersonInline,
-#        PhoneNumberInline
+#    	ContactInline,
+#    	StudentAddressInline
 #    ]
+    list_display = ("street", "city")
+    readonly_fields = ("student_links","contact_links")
 
-#    readonly_fields = ("family_members",)
-#    fields = ("name","family_members")
+    def student_links(self, obj):
+        students = obj.student_set.all()
+        links = [];
+        for student in students:
+            change_url = urlresolvers.reverse("admin:people_student_change", args=(student.id,))
+            links.append('<a href="%s">%s</a>' % (change_url, student))
+        return format_html("<br>".join(links));
+    student_links.short_description = _("Students at this Address")
 
-#    def family_members(self, obj):
-#        members = Person.objects.filter(family=obj)
-#        if members.count()==0:
-#            return '(none)'
-#        output = ", ".join([str(member) for member in members])
-#        return output
-#
-#        member_links = []
-#        for member in members:
-#            change_url = urlresolvers.reverse("admin:people_person_change", args=(member.id,))
-#            member_links.append('<a href="%s">%s</a>' % (change_url, member.first_name))
-#        return format_html(", ".join(member_links))
-#    family_members.allow_tags = True
-#    family_members.verbose_name = _("Family Members")
+    def contact_links(self, obj):
+        contacts = obj.contact_set.all()
+        links = [];
+        for contact in contacts:
+            change_url = urlresolvers.reverse("admin:people_contact_change", args=(contact.id,))
+            links.append('<a href="%s">%s</a>' % (change_url, contact))
+        return format_html("<br>".join(links));
+    contact_links.short_description = _("Contacts at this Address")
 
-#admin.site.register(Family, FamilyAdmin)
+
+
+admin.site.register(Address, AddressAdmin)

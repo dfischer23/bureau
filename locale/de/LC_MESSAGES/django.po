@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-15 20:28+0000\n"
+"POT-Creation-Date: 2016-11-29 15:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,106 +18,178 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: people/admin.py:17 people/admin.py:49 people/models.py:18
+#: people/admin.py:22 people/admin.py:65
+msgid "Class Level"
+msgstr "Klassenstufe"
+
+#: people/admin.py:28
+msgid "Formalities"
+msgstr "Formalitäten"
+
+#: people/admin.py:36
+msgid "Edit Guardians"
+msgstr "Erziehungsberechtigte bearbeiten"
+
+#: people/admin.py:51 people/models.py:87
+msgid "Guardians"
+msgstr "Erziehungsberechtigte"
+
+#: people/admin.py:55 people/models.py:38
 msgid "Name"
 msgstr "Name"
 
-#: people/admin.py:21
-#, fuzzy
-#| msgid "Family"
-msgid "Familie"
-msgstr "Familie"
-
-#: people/admin.py:48
-msgid "ID"
-msgstr ""
-
-#: people/admin.py:50 people/models.py:51
-msgid "Phone Numbers"
-msgstr "Telefonnummern"
-
-#: people/admin.py:59
-msgid "Export CSV"
-msgstr "CSV Exportieren"
-
-#: people/models.py:8 people/models.py:53 people/models.py:66
-msgid "Contact"
-msgstr "Kontakt"
-
-#: people/models.py:9
-msgid "Contacts"
-msgstr "Kontakte"
-
-#: people/models.py:12
-msgid "Other"
-msgstr "Andere"
-
-#: people/models.py:13 people/models.py:40
-msgid "Family"
-msgstr "Familie"
-
-#: people/models.py:14
-msgid "Company"
-msgstr "Firma"
-
-#: people/models.py:15
-msgid "Organization"
-msgstr "Organisation/Amt/etc"
-
-#: people/models.py:19
-msgid "Kind"
-msgstr "Art"
-
-#: people/models.py:21
-msgid "Street Address"
-msgstr "Straße"
-
-#: people/models.py:22
-msgid "Postal Code"
-msgstr "PLZ"
-
-#: people/models.py:23
-msgid "City"
-msgstr "Ort"
-
-#: people/models.py:24
-msgid "Country"
-msgstr "Land"
-
-#: people/models.py:32
-msgid "Student"
-msgstr "SchülerIn"
-
-#: people/models.py:33 people/models.py:41
+#: people/admin.py:124 people/models.py:61
 msgid "Students"
 msgstr "SchülerInnen"
 
+#: people/admin.py:145
+msgid "Students at this Address"
+msgstr "SchülerInnen an dieser Adresse"
+
+#: people/admin.py:154
+msgid "Contacts at this Address"
+msgstr "Kontakte an dieser Adresse"
+
+#: people/models.py:10 people/models.py:86
+msgid "Postal Address"
+msgstr "Postadresse"
+
+#: people/models.py:11
+msgid "Postal Addresses"
+msgstr "Postadressen"
+
+#: people/models.py:13
+msgid "Street Address"
+msgstr "Straße"
+
+#: people/models.py:14
+msgid "Postal Code"
+msgstr "PLZ"
+
+#: people/models.py:15
+msgid "City"
+msgstr "Ort"
+
+#: people/models.py:17
+msgid "Alternative"
+msgstr "Alternativ"
+
+#: people/models.py:19
+msgid "Country"
+msgstr "Land"
+
+#: people/models.py:27
+msgid "Contact"
+msgstr "Kontakt"
+
+#: people/models.py:28
+msgid "Contacts"
+msgstr "Kontakte"
+
+#: people/models.py:32
+msgid "Other"
+msgstr "Andere"
+
+#: people/models.py:33
+msgid "Person"
+msgstr "Person"
+
+#: people/models.py:34
+msgid "Company"
+msgstr "Firma"
+
 #: people/models.py:35
+msgid "Organization"
+msgstr "Organisation/Amt/etc"
+
+#: people/models.py:39 people/models.py:73
 msgid "First Name"
 msgstr "Vorname"
 
-#: people/models.py:36
+#: people/models.py:40
+msgid "Kind"
+msgstr "Art"
+
+#: people/models.py:43
+msgid "Phone"
+msgstr "Festnetz"
+
+#: people/models.py:44
+msgid "Mobile"
+msgstr "Mobil"
+
+#: people/models.py:45
+msgid "EMail"
+msgstr "EMail"
+
+#: people/models.py:60
+msgid "Student"
+msgstr "SchülerIn"
+
+#: people/models.py:65
+msgid "male"
+msgstr "männlich"
+
+#: people/models.py:66
+msgid "female"
+msgstr "weiblich"
+
+#: people/models.py:67
+msgid "other/unspecified"
+msgstr "anderes/ohne Angabe"
+
+#: people/models.py:70
+msgid "Entry #"
+msgstr "Eingangsnummer"
+
+#: people/models.py:72
 msgid "Last Name"
 msgstr "Nachname"
 
-#: people/models.py:50 people/models.py:54
-msgid "Phone Number"
-msgstr "Telefonnummer"
+#: people/models.py:75
+msgid "Date of Birth"
+msgstr "Geburtsdatum"
 
-#: people/models.py:55 people/models.py:68
-msgid "Description"
-msgstr "Beschreibung"
+#: people/models.py:76
+msgid "Place of Birth"
+msgstr "Geburtsort"
 
-#: people/models.py:63
-msgid "EMail Address"
-msgstr "EMail-Adresse"
+#: people/models.py:78
+msgid "Gender"
+msgstr "Geschlecht"
 
-#: people/models.py:64
-msgid "EMailAddresses"
-msgstr "EMail-Adressen"
+#: people/models.py:79
+msgid "Religious Denomination"
+msgstr "Religionszugehörigkeit"
 
-#: people/models.py:67
-#, fuzzy
-#| msgid "Street Address"
-msgid "Address"
-msgstr "Straße"
+#: people/models.py:80
+msgid "Citizenship"
+msgstr "Staatsbürgerschaft"
+
+#: people/models.py:82
+msgid "First Enrollment (at any School)"
+msgstr "Erste Einschulung"
+
+#: people/models.py:83
+msgid "Class Level (at Reference)"
+msgstr "Klassenstufe (bei Referenz)"
+
+#: people/models.py:84
+msgid "Class Level Reference"
+msgstr "Klassenstufen-Referenz"
+
+#: people/models.py:89
+msgid "Contract #"
+msgstr "Schulvertrag #"
+
+#: people/models.py:90
+msgid "Privacy Policy Agreement"
+msgstr "Datenschutzerklärung"
+
+#: people/models.py:91
+msgid "Vaccination Policy Agreement"
+msgstr "Infektionsschutzgesetz"
+
+#: people/models.py:92
+msgid "Sibling"
+msgstr "Geschwisterkind"
