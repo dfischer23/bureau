@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-29 15:45+0000\n"
+"POT-Creation-Date: 2016-11-29 16:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,39 +18,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: people/admin.py:22 people/admin.py:65
+#: people/admin.py:31 people/admin.py:74
 msgid "Class Level"
 msgstr "Klassenstufe"
 
-#: people/admin.py:28
+#: people/admin.py:37
 msgid "Formalities"
 msgstr "Formalitäten"
 
-#: people/admin.py:36
+#: people/admin.py:45
 msgid "Edit Guardians"
 msgstr "Erziehungsberechtigte bearbeiten"
 
-#: people/admin.py:51 people/models.py:87
+#: people/admin.py:60 people/models.py:87
 msgid "Guardians"
 msgstr "Erziehungsberechtigte"
 
-#: people/admin.py:55 people/models.py:38
+#: people/admin.py:64 people/models.py:38
 msgid "Name"
 msgstr "Name"
 
-#: people/admin.py:124 people/models.py:61
+#: people/admin.py:134 people/models.py:61
 msgid "Students"
 msgstr "SchülerInnen"
 
-#: people/admin.py:145
+#: people/admin.py:155
 msgid "Students at this Address"
 msgstr "SchülerInnen an dieser Adresse"
 
-#: people/admin.py:154
+#: people/admin.py:164
 msgid "Contacts at this Address"
 msgstr "Kontakte an dieser Adresse"
 
-#: people/models.py:10 people/models.py:86
+#: people/models.py:10 people/models.py:42 people/models.py:86
 msgid "Postal Address"
 msgstr "Postadresse"
 
@@ -122,7 +122,7 @@ msgstr "Mobil"
 msgid "EMail"
 msgstr "EMail"
 
-#: people/models.py:60
+#: people/models.py:60 people/models.py:107
 msgid "Student"
 msgstr "SchülerIn"
 
@@ -193,3 +193,31 @@ msgstr "Infektionsschutzgesetz"
 #: people/models.py:92
 msgid "Sibling"
 msgstr "Geschwisterkind"
+
+#: people/models.py:101
+msgid "Note"
+msgstr "Notiz"
+
+#: people/models.py:102
+msgid "Notes"
+msgstr "Notizen"
+
+#: people/models.py:104
+msgid "Content"
+msgstr "Inhalt"
+
+#: people/models.py:105
+msgid "Date"
+msgstr "Datum"
+
+#: people/models.py:106
+msgid "Archived"
+msgstr "Archiviert"
+
+#: people/templates/admin/base_site.html:4
+msgid "Django site admin"
+msgstr ""
+
+#: people/templates/admin/base_site.html:9
+msgid "Django administration"
+msgstr ""

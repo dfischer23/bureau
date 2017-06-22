@@ -21,19 +21,44 @@
                     <table width="100%">
                         <tr>
                             <th>Name</th>
-                            <th>Familie</th>
+                            <th></th>
                             <th>Telefon</th>
-                            <th>EMail</th>
+                            <th>Mobil</th>
+                            <th>E-Mail</th>
                         </tr>
                         {% for student in students|dictsort:"first_name" %}
                             <tr>
                                 <td>
-                                    {{ student.first_name }} {{ student.last_name }}
+                                    {{ student.first_name }} {{ student.name }}
                                 </td>
-                                {% with family=student.family %}
+                                {% with adr=student.address %}
+                                <td>
+                                    {{ adr.street }}<br/>{{ adr.postal_code }} {{ adr.city }}
+                                    {{ adr.alternative }}
+                                </td>
+
+                                {% endwith %}
+                            </tr>
+                            {% for guardian in student.guardians.all %}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
                                     <td>
-                                        {{ family.name }}
+                                            {{ guardian.first_name }} 
                                     </td>
+                                    <td>
+                                            {{ guardian.phone_number }} 
+                                    </td>
+                                    <td>
+                                            {{ guardian.cellphone_number }}<br>
+                                    </td>
+                                    <td>
+                                            {{ guardian.email_address }}<br>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                                <!--
+                                {% with family=student.family %}
                                     <td>
                                         {% for phone in family.phonenumber_set.all %}
                                             {{ phone.number }} ({{ phone.description }})<br>
@@ -45,7 +70,7 @@
                                         {% endfor %}
                                     </td>
                                 {% endwith %}
-                            </tr>
+                                -->
                         {% endfor %}
                     </table>
                 </div>

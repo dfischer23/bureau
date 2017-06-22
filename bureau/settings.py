@@ -25,7 +25,7 @@ SECRET_KEY = 'b_!6n77=ldduim4)t*af^%zryihar=80h=7--2r5e37^0i1lg$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["10.23.0.11","localhost","lab.interaktiva.de"]
 
 
 # Application definition

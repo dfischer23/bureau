@@ -9,6 +9,7 @@ class Address(models.Model):
     class Meta:
         verbose_name = _("Postal Address")
         verbose_name_plural = _("Postal Addresses")
+        ordering = ["city", "street"]
 
     street = models.CharField(_("Street Address"), max_length=200, blank=True)
     postal_code = models.CharField(_("Postal Code"), max_length=200, blank=True)
@@ -19,7 +20,7 @@ class Address(models.Model):
     country = models.CharField(_("Country"), max_length=200, blank=True)
 
     def __str__(self):
-        return self.street + ", " + self.city;
+        return self.city + (", " + self.street) if self.street else "";
 
 
 class Contact(models.Model):
@@ -50,7 +51,7 @@ class Contact(models.Model):
         return self.name
 
 
-# Platzhalter Elterngespräch,Anmerkung,
+# Platzhalter Elterngespraech,Anmerkung,
 # Alter Einschulung,Warteliste,Klassenstufe 13/14,Klassenstufe 16/17,
 # Zusatz,Frei 1,
 
@@ -94,3 +95,15 @@ class Student(models.Model):
 
     def __str__(self):
         return self.name + ", " + self.first_name
+
+
+class Note(models.Model):
+    class Meta:
+        verbose_name = _("Note")
+        verbose_name_plural = _("Notes")
+
+    content = models.TextField(_("Content"))
+    date = models.DateField(_("Date"), blank=True, null=True)
+    archived = models.BooleanField(_("Archived"), blank=True, default=False)
+    student = models.ForeignKey(Student, verbose_name=_("Student"), null=True, blank=True, on_delete=models.CASCADE)
+#    user = ForeignKey

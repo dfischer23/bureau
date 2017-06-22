@@ -5,15 +5,30 @@ from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 
 from .models import *
+from django import forms
 
 from datetime import date
 
+class NoteForm(forms.ModelForm):
+    class Meta:
+        widgets = {"content": forms.Textarea(attrs={"rows": 4, "cols":50 })}
+
+class NoteInline(admin.TabularInline):
+    extra = 0
+    model = Note
+    form = NoteForm
+    fields = ("content",)
+
+
 class StudentAdmin(admin.ModelAdmin):
     model = Student
-    list_display = ("name", "first_name")
+    list_display = ("name", "first_name", "calc_level")
     search_fields = ["first_name", "name"]
     filter_horizontal = ("guardians",)
     readonly_fields = ("guardians_links","calc_level")
+    inlines = [
+       NoteInline,
+    ]
 
     fieldsets = (
     	(None, {
@@ -60,22 +75,24 @@ class StudentAdmin(admin.ModelAdmin):
     	today = date.today();
     	current_year = today.year-1 if today.month < 8 else today.year
     	level =  current_year - (int(obj.level_ref) - int(obj.level_ofs))
-    	return("%i (for %i/%i)" % (level, current_year, current_year+1));
-        #return "%i//%i" % (obj.level_ref, obj.level_ofs);
+    	return(level)
+        #return("%i (for %i/%i)" % (level, current_year, current_year+1));
+        
     calc_level.short_description = _("Class Level")
 
 admin.site.register(Student, StudentAdmin)
 
 
-class ContactInline(admin.TabularInline):
-    extra = 0
-    model = Contact
+
+#class ContactInline(admin.TabularInline):
+#    extra = 0
+#    model = Contact
 #    classes = ["collapse"]
 
-class StudentAddressInline(admin.TabularInline):
-    extra = 0
-    model = Student
-    fields = ("name", "first_name")
+#class StudentAddressInline(admin.TabularInline):
+#    extra = 0
+#    model = Student
+#    fields = ("name", "first_name")
 
 
 # def export_csv(modeladmin, request, queryset):
