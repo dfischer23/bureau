@@ -32,7 +32,7 @@ class StudentAdmin(admin.ModelAdmin):
 
     fieldsets = (
     	(None, {
-    		"fields": ("name", "first_name", "dob", "pob", "address", "guardians_links")
+    		"fields": ("name", "first_name", "status", "dob", "pob", "address", "guardians_links")
     		}),
     	(_("Class Level"), {
     		"fields":(
