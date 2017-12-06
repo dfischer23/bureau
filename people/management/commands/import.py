@@ -37,6 +37,8 @@ class Command(BaseCommand):
 				student.denomination = row["Konfession"]
 				student.citizenship = row["Staatsangehörigkeit"]
 
+				student.status = "active";
+
 				student.level_ref = 2016;
 				student.level_ofs = int(row["Klassenstufe 16/17"]);
 				student.first_enrollment = 2017 - int(row["Klassenstufe 16/17"]);

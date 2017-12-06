@@ -34,7 +34,7 @@ def list_excel(request):
 	sheet.set_column(2,1,7)
 	sheet.set_column(3,10,15)
 
-	for student in Student.objects.all():
+	for student in Student.objects.all().filter(status="active"):
 
 		if not student.id in printed:
 			gray = not gray
@@ -43,7 +43,7 @@ def list_excel(request):
 			guardians = student.guardians.all()
 
 			# actually print the first guardians's students
-			for child in guardians[0].students.all():
+			for child in guardians[0].students.all().filter(status="active"):
 				sheet.write(row, 0, child.name)
 				sheet.write(row, 1, child.first_name)
 				sheet.write_datetime(row, 2, child.dob)

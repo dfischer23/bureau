@@ -22,8 +22,9 @@ class NoteInline(admin.TabularInline):
 
 class StudentAdmin(admin.ModelAdmin):
     model = Student
-    list_display = ("name", "first_name", "calc_level")
+    list_display = ("name", "first_name", "calc_level", "status")
     search_fields = ["first_name", "name"]
+    list_filter = ("status",)
     filter_horizontal = ("guardians",)
     readonly_fields = ("guardians_links","calc_level")
     inlines = [
