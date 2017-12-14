@@ -1,0 +1,24 @@
+{% extends "admin/index.html" %}
+{% block content %}
+{{ block.super }}
+{% endblock %}
+
+{% block sidebar %}
+{{ block.super }}
+
+<div class="module">
+	<table>
+		<caption>EXPORT</caption>
+		<tbody>
+			<tr>
+				<th scope="row">
+					<a href="/people/adressliste">SchülerInnen/Eltern Adressliste</a>
+				</th>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}

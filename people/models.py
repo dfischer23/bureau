@@ -68,7 +68,19 @@ class Student(models.Model):
         ("__", _("other/unspecified"))
         )
 
+    STATUS_CHOICES = (
+        ("active", _("Active Student")),
+        ("alumnus", _("Alumnus")),
+        ("waitlisted", _("waitlisted")),
+        ("intent_declared", _("Declaration of Intent")),
+        ("rejected", _("rejected")),
+        ("applied", _("Application received")),
+        ("admission_dialog", _("in Admission Dialog")),
+        ("sitting", _("sitting in")),
+        )
+
     entry_nr = models.IntegerField(_("Entry #"), blank=True)
+    status = models.CharField(_("Status"), max_length=20, blank=True, null=True, choices=STATUS_CHOICES)
 
     name = models.CharField(_("Last Name"), max_length=200)
     first_name = models.CharField(_("First Name"), max_length=200)
