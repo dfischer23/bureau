@@ -73,7 +73,8 @@ def list_excel(request):
 
 	return response
 
-#@login_required
+# for testing only
+@login_required
 def list_csv(request):
 		response = HttpResponse(content_type="text/csv")
 		response["Content-Disposition"] = "attachment;filename=list.csv"
@@ -102,5 +103,20 @@ def list_csv(request):
 						guardian.phone_number, guardian.cellphone_number, guardian.email_address
 						])
 
+
+		return response;
+
+#@login_required
+def students_csv(request, status="active"):
+		response = HttpResponse(content_type="text/csv")
+		response["Content-Disposition"] = "attachment;filename=list.csv"
+
+		writer = csv.writer(response)
+
+		writer.writerow(["SchülerInnen mit Status '"+status+"'", "Stand:", "---"]);
+		writer.writerow(["Name", "Vorname", "Geburtsdatum", "Strasse", "Ort", "Telefon", "Handy", "E-Mail"])
+
+		for student in Student.objects.all().filter(status=status):
+			writer.writerow([student.name, student.first_name, student.dob.strftime("%d.%m.%Y")])
 
 		return response;
