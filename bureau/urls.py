@@ -19,6 +19,9 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^people/', include('people.urls')),
     url(r'^admin/', admin.site.urls),
+    #url(r'^/', admin.site.urls),
+
+#    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
 admin.site.site_header = "Infinita Bureau"

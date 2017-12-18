@@ -82,6 +82,7 @@ class Student(models.Model):
     entry_nr = models.IntegerField(_("Entry #"), blank=True)
     status = models.CharField(_("Status"), max_length=20, blank=True, null=True, choices=STATUS_CHOICES)
 
+    short_name = models.CharField( _("Short Name"), max_length=100)
     name = models.CharField(_("Last Name"), max_length=200)
     first_name = models.CharField(_("First Name"), max_length=200)
 

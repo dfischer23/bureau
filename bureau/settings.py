@@ -25,7 +25,7 @@ SECRET_KEY = 'b_!6n77=ldduim4)t*af^%zryihar=80h=7--2r5e37^0i1lg$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["10.23.0.11","localhost","lab.interaktiva.de"]
+ALLOWED_HOSTS = ["10.23.0.11","localhost","lab.interaktiva.de","d"]
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,10 @@ LOCALE_PATHS = (
     BASE_DIR + '/locale', )
 
 LOGIN_URL = '/admin/login/'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

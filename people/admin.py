@@ -22,7 +22,7 @@ class NoteInline(admin.TabularInline):
 
 class StudentAdmin(admin.ModelAdmin):
     model = Student
-    list_display = ("name", "first_name", "calc_level", "status")
+    list_display = ("short_name", "name", "first_name", "calc_level", "status")
     search_fields = ["first_name", "name"]
     list_filter = ("status",)
     filter_horizontal = ("guardians",)
@@ -33,7 +33,7 @@ class StudentAdmin(admin.ModelAdmin):
 
     fieldsets = (
     	(None, {
-    		"fields": ("name", "first_name", "status", "dob", "pob", "address", "guardians_links")
+    		"fields": ("short_name", "name", "first_name", "status", "dob", "pob", "address", "guardians_links")
     		}),
     	(_("Class Level"), {
     		"fields":(

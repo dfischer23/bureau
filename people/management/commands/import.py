@@ -50,6 +50,7 @@ class Command(BaseCommand):
 
 				student.first_name = row["Vorname/n"]
 				student.name = row["Name Schüler"]
+				student.short_name = student.first_name.split()[0]+" "+student.name[0];
 				student.dob = datetime.strptime(row["Geburtsdatum"], "%m/%d/%y")
 				student.pob = row["Geburtsort"];
 
