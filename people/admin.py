@@ -127,7 +127,7 @@ class ContactAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            "fields": ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "student_links")
+            "fields": ("name", "first_name", "kind", "is_teammembner", "address", "phone_number", "cellphone_number", "email_address", "student_links")
             }),
         );
 
