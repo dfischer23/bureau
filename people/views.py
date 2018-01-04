@@ -128,9 +128,22 @@ def students_csv(request, status="active"):
 		writer = csv.writer(response)
 
 		writer.writerow(["SchülerInnen mit Status '"+status+"'", "Stand:", "---"]);
-		writer.writerow(["Name", "Vorname", "Geburtsdatum", "Strasse", "Ort", "Telefon", "Handy", "E-Mail"])
+		writer.writerow(["Name", "Vorname", "Geburtsdatum", "Strasse", "Ort", "Erziehungsberechtigte"])
 
 		for student in Student.objects.all().filter(status=status):
-			writer.writerow([student.name, student.first_name, student.dob.strftime("%d.%m.%Y")])
+			guardian_names = [];
+			first_guardian_name = ""
+			for guardian in student.guardians.all():
+				if first_guardian_name == guardian.name:
+					guardian_names.append(guardian.first_name);
+				else:
+					first_guardian_name = guardian.name;
+					guardian_names.append(guardian.first_name + " " + guardian.name);
+
+			guardian_names.reverse()
+
+			writer.writerow([student.name, student.first_name, student.dob.strftime("%d.%m.%Y"), 
+				student.address.street, student.address.postal_code+" "+student.address.city,
+				" und ".join(guardian_names)])
 
 		return response;
