@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 
-from .models import Student
+from .models import Student, Contact
 from django.shortcuts import render
 
 import csv
@@ -22,9 +22,9 @@ def list_excel(request):
 	sheet = book.add_worksheet("Adressliste")
 
 	format_normal = book.add_format({"font_size": 8, "bold": False, "num_format": "dd.mm.yyyy"})
-	format_normal_gray = book.add_format({"font_size": 8, "bold": False, "num_format": "dd.mm.yyyy", "bg_color":"#BBBBBB"})
+	format_normal_gray = book.add_format({"font_size": 8, "bold": False, "num_format": "dd.mm.yyyy", "bg_color":"#CCCCCC"})
 	format_bold = book.add_format({"font_size": 8, "bold": True, "num_format": "dd.mm.yyyy"})
-	format_bold_gray = book.add_format({"font_size": 8, "bold": True, "num_format": "dd.mm.yyyy", "bg_color":"#BBBBBB"})
+	format_bold_gray = book.add_format({"font_size": 8, "bold": True, "num_format": "dd.mm.yyyy", "bg_color":"#CCCCCC"})
 
 	printed = []
 	row = 1
@@ -64,6 +64,20 @@ def list_excel(request):
 				sheet.write(row, 7, guardian.email_address)
 				sheet.set_row(row, 10, format_normal_gray if gray else format_normal)
 				row += 1
+
+	row += 1
+	for person in Contact.objects.all().filter(is_teammember=True):
+				sheet.write(row, 0, person.name)
+				sheet.write(row, 1, person.first_name)
+				sheet.write(row, 2, "")
+				sheet.write(row, 3, person.address.street)
+				sheet.write(row, 4, person.address.postal_code+" "+person.address.city)
+				sheet.write(row, 5, person.phone_number)
+				sheet.write(row, 6, person.cellphone_number)
+				sheet.write(row, 7, person.email_address)
+				sheet.set_row(row, 10, format_normal)
+				row += 1
+
 
 	book.close()
 
