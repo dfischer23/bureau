@@ -26,6 +26,8 @@ class Command(BaseCommand):
 			reader = csv.DictReader(file, delimiter=",", quotechar="\"")
 			for row in reader:
 
+				#self.stdout.write("Add Student %s" % row)
+
 				entry_nr = int(row["Eingangsnummer"])
 				student, created = Student.objects.get_or_create(entry_nr=entry_nr);
 
@@ -39,9 +41,9 @@ class Command(BaseCommand):
 
 				student.status = "active";
 
-				student.level_ref = 2016;
-				student.level_ofs = int(row["Klassenstufe 16/17"]);
-				student.first_enrollment = 2017 - int(row["Klassenstufe 16/17"]);
+				student.level_ref = 2017;
+				student.level_ofs = int(row["Klassenstufe 17/18"]);
+				student.first_enrollment = 2018 - int(row["Klassenstufe 17/18"]);
 
 				student.privacy_policy_agreement = (row["Datenschutzerklärung"] != "")
 				student.vaccination_policy_agreement = (row["Infektionsschutzgesetz"] != "");
@@ -57,7 +59,7 @@ class Command(BaseCommand):
 				student.address = self.add_address(row["Straße"], row["Stadt"])
 
 				self.add_guardian(student, row["Name Erziehungsberechtigter A"], row["Vorname A"], row["Straße A"], row["Stadt A"], row["Telefon A"], row["Mobil A"], row["E-Mail A"]);
-				self.add_guardian(student, row["Name Erziehungsberechtigter B"], row["Vorname B"], row["Straße B"], row["Stadt B"], row["Telefon B"], row["Mobil B"], row["E-Mail B"]);
+				if row["Name Erziehungsberechtigter B"] != "": self.add_guardian(student, row["Name Erziehungsberechtigter B"], row["Vorname B"], row["Straße B"], row["Stadt B"], row["Telefon B"], row["Mobil B"], row["E-Mail B"]);
 
 				student.save();
 
@@ -65,7 +67,8 @@ class Command(BaseCommand):
 
 	def add_guardian(self, student, name, first_name, street, city, phone, mobile, email):
 		if name:
-#			self.stdout.write("Add guardian %s %s for %s" % (first_name, name, student.first_name));
+			#self.stdout.write("Add guardian %s %s for %s" % (first_name, name, student.first_name));
+			#self.stdout.write(" Address: %s, %s, phone %s, mob %s, email %s" % (street, city, phone, mobile, email));
 
 			addr = self.add_address(street, city)
 
