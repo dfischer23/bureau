@@ -9,14 +9,20 @@ from rest_framework import routers, serializers, viewsets
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Student
-        fields = ('short_name', 'name', 'first_name', 'dob')
+        fields = ('id', 'short_name', 'name', 'first_name', 'dob')
 
 class StudentViewSet(viewsets.ModelViewSet):
-    queryset = Student.objects.order_by('short_name')
+#    queryset = Student.objects.order_by('short_name')
     serializer_class = StudentSerializer
+    def get_queryset(self):
+    	queryset = Student.objects
+    	status = self.request.query_params.get("status", "active")
+    	queryset = queryset.filter(status=status)
+    	return queryset.order_by('short_name')
+
 
 router = routers.DefaultRouter()
-router.register(r'students', StudentViewSet)
+router.register(r'students', StudentViewSet, "students")
 
 urlpatterns = [
 #    url(r'^$', views.index, name='index'),
