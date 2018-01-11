@@ -74,7 +74,7 @@ def list_excel(request):
 				sheet.write(row, 4, person.address.postal_code+" "+person.address.city)
 				sheet.write(row, 5, person.phone_number)
 				sheet.write(row, 6, person.cellphone_number)
-				sheet.write(row, 7, person.email_address)
+				sheet.write(row, 7, person.team_email_address)
 				sheet.set_row(row, 10, format_normal)
 				row += 1
 

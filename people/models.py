@@ -40,12 +40,13 @@ class Contact(models.Model):
     first_name = models.CharField(_("First Name"), max_length=200, blank=True)
     kind = models.CharField(_("Kind"), max_length=3, choices=KIND_CHOICES)
 
-    is_teammember = models.BooleanField(_("Team Member"), default=False)
-
     address = models.ForeignKey(Address, verbose_name=_("Postal Address"), null=True, on_delete=models.CASCADE)
     phone_number = models.CharField(_("Phone"), max_length=64, blank=True)
     cellphone_number = models.CharField(_("Mobile"), max_length=64, blank=True)
     email_address = models.CharField(_("EMail"), max_length=128, blank=True)
+
+    is_teammember = models.BooleanField(_("Team Member"), default=False)
+    team_email_address = models.CharField(_("Infinita-EMail"), max_length=128, blank=True)
 
     def __str__(self):
         if self.first_name:
