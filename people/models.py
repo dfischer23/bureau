@@ -97,6 +97,10 @@ class Student(models.Model):
     gender = models.CharField(_("Gender"), max_length=2, blank=True, null=True, choices=GENDER_CHOICES)
     denomination = models.CharField(_("Religious Denomination"), max_length=200, blank=True, null=True)
     citizenship = models.CharField(_("Citizenship"), max_length=200, blank=True, null=True)
+    language = models.CharField(_("Household Language"), max_length=200, blank=True, default="Deutsch")
+
+    first_day = models.DateField(_("Fist day at this School"), blank=True, null=True)
+    last_day = models.DateField(_("Last day at this School"), blank=True, null=True)
 
     first_enrollment = models.IntegerField(_("First Enrollment (at any School)"), blank=True, null=True)
     level_ofs = models.IntegerField(_("Class Level (at Reference)"), blank=True, null=True)
@@ -105,7 +109,9 @@ class Student(models.Model):
     address = models.ForeignKey(Address, verbose_name=_("Postal Address"), null=True, blank=True, on_delete=models.CASCADE)
     guardians = models.ManyToManyField(Contact, verbose_name=_("Guardians"), limit_choices_to={"kind":"prs"}, blank=True, related_name="students")
 
-    contract_nr = models.IntegerField(_("Contract #"), null=True, blank=True)
+    district_school = models.CharField(_("District School"), max_length=200, blank=True, null=True)
+
+    after_school_care = models.BooleanField(_("in After-school Care"), default=False)
     privacy_policy_agreement = models.NullBooleanField(_("Privacy Policy Agreement"))
     vaccination_policy_agreement = models.NullBooleanField(_("Vaccination Policy Agreement"))
     is_sibling = models.NullBooleanField(_("Sibling"))

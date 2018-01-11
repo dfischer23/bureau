@@ -37,6 +37,7 @@ class StudentAdmin(admin.ModelAdmin):
     		}),
     	(_("Class Level"), {
     		"fields":(
+                "first_day", "last_day",
     			"first_enrollment",
     			"calc_level",
     			"level_ofs", "level_ref"
@@ -44,9 +45,9 @@ class StudentAdmin(admin.ModelAdmin):
     	(_("Formalities"), {
     		"classes":("collapse",),
     		"fields":(
-    			"gender",
-    			"entry_nr", "contract_nr", 
+    			"gender", "language",
     			"citizenship", "denomination",
+                "after_school_care", "district_school",
     			"privacy_policy_agreement", "vaccination_policy_agreement", "is_sibling"
     		)}),
     	(_("Edit Guardians"), {
