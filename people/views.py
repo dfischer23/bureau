@@ -53,7 +53,7 @@ def list_excel(request):
 
 
 			# print all guardians
-			for guardian in guardians:
+			for guardian in guardians.filter(on_address_list=True):
 				sheet.write(row, 0, guardian.name)
 				sheet.write(row, 1, guardian.first_name)
 				sheet.write(row, 2, "")

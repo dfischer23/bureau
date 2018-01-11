@@ -45,6 +45,8 @@ class Contact(models.Model):
     cellphone_number = models.CharField(_("Mobile"), max_length=64, blank=True)
     email_address = models.CharField(_("EMail"), max_length=128, blank=True)
 
+    on_address_list = models.BooleanField(_("Appears on Adress List"), default=True)
+
     is_teammember = models.BooleanField(_("Team Member"), default=False)
     team_email_address = models.CharField(_("Infinita-EMail"), max_length=128, blank=True)
 
