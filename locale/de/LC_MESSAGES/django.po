@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-11 13:43+0000\n"
+"POT-Creation-Date: 2018-01-11 15:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: people/admin.py:38 people/admin.py:83
+#: people/admin.py:38 people/admin.py:88
 msgid "Class Level"
 msgstr "Klassenstufe"
 
@@ -27,30 +27,34 @@ msgid "Formalities"
 msgstr "Formalitäten"
 
 #: people/admin.py:53
+msgid "Application"
+msgstr "Bewerbungsverfahren"
+
+#: people/admin.py:58
 msgid "Edit Guardians"
 msgstr "Erziehungsberechtigte bearbeiten"
 
-#: people/admin.py:68 people/models.py:110
+#: people/admin.py:73 people/models.py:108
 msgid "Guardians"
 msgstr "Erziehungsberechtigte"
 
-#: people/admin.py:72 people/models.py:39
+#: people/admin.py:77 people/models.py:39
 msgid "Name"
 msgstr "Name"
 
-#: people/admin.py:143 people/models.py:67
+#: people/admin.py:148 people/models.py:67
 msgid "Students"
 msgstr "SchülerInnen"
 
-#: people/admin.py:164
+#: people/admin.py:169
 msgid "Students at this Address"
 msgstr "SchülerInnen an dieser Adresse"
 
-#: people/admin.py:173
+#: people/admin.py:178
 msgid "Contacts at this Address"
 msgstr "Kontakte an dieser Adresse"
 
-#: people/models.py:10 people/models.py:43 people/models.py:109
+#: people/models.py:10 people/models.py:43 people/models.py:107
 msgid "Postal Address"
 msgstr "Postadresse"
 
@@ -102,7 +106,7 @@ msgstr "Firma"
 msgid "Organization"
 msgstr "Organisation/Amt/etc"
 
-#: people/models.py:40 people/models.py:92
+#: people/models.py:40 people/models.py:90
 msgid "First Name"
 msgstr "Vorname"
 
@@ -134,7 +138,7 @@ msgstr "Teammitglied"
 msgid "Infinita-EMail"
 msgstr "Infinita-EMail"
 
-#: people/models.py:66 people/models.py:132
+#: people/models.py:66 people/models.py:138
 msgid "Student"
 msgstr "SchülerIn"
 
@@ -151,134 +155,138 @@ msgid "other/unspecified"
 msgstr "anderes/ohne Angabe"
 
 #: people/models.py:77
-msgid "Active Student"
-msgstr "Aktuell SchülerIn dieser Schule"
+msgid "active"
+msgstr "Aktiv"
 
 #: people/models.py:78
-msgid "Alumnus"
-msgstr "EhemaligeR"
+msgid "alumn"
+msgstr "Ehemalig"
 
 #: people/models.py:79
 msgid "waitlisted"
-msgstr "auf der Warteliste"
+msgstr "Warteliste"
 
 #: people/models.py:80
-msgid "Declaration of Intent"
+msgid "intent declared"
 msgstr "Absichtserklärung"
 
 #: people/models.py:81
+msgid "in admission procedure"
+msgstr "Bewerbungsverfahren"
+
+#: people/models.py:82
 msgid "rejected"
 msgstr "abgesagt"
 
-#: people/models.py:82
-msgid "Application received"
-msgstr "im Bewerbungsverfahren"
-
-#: people/models.py:83
-msgid "in Admission Dialog"
-msgstr "Aufnahmegespräch"
-
-#: people/models.py:84
-msgid "sitting in"
-msgstr "Hospitation"
-
-#: people/models.py:87
+#: people/models.py:85
 msgid "Entry #"
 msgstr "Eingangsnummer"
 
-#: people/models.py:88
+#: people/models.py:86
 msgid "Status"
 msgstr "Status"
 
-#: people/models.py:90
+#: people/models.py:88
 msgid "Short Name"
 msgstr "Rufname"
 
-#: people/models.py:91
+#: people/models.py:89
 msgid "Last Name"
 msgstr "Nachname"
 
-#: people/models.py:94
+#: people/models.py:92
 msgid "Date of Birth"
 msgstr "Geburtsdatum"
 
-#: people/models.py:95
+#: people/models.py:93
 msgid "Place of Birth"
 msgstr "Geburtsort"
 
-#: people/models.py:97
+#: people/models.py:95
 msgid "Gender"
 msgstr "Geschlecht"
 
-#: people/models.py:98
+#: people/models.py:96
 msgid "Religious Denomination"
 msgstr "Religionszugehörigkeit"
 
-#: people/models.py:99
+#: people/models.py:97
 msgid "Citizenship"
 msgstr "Staatsbürgerschaft"
 
-#: people/models.py:100
+#: people/models.py:98
 msgid "Household Language"
 msgstr "Sprache im Elternhaus"
 
-#: people/models.py:102
+#: people/models.py:100
 msgid "Fist day at this School"
 msgstr "Erster Tag an dieser Schule"
 
-#: people/models.py:103
+#: people/models.py:101
 msgid "Last day at this School"
 msgstr "Letzter Tag an dieser Schule"
 
-#: people/models.py:105
+#: people/models.py:103
 msgid "First Enrollment (at any School)"
 msgstr "Erste Einschulung"
 
-#: people/models.py:106
+#: people/models.py:104
 msgid "Class Level (at Reference)"
 msgstr "Klassenstufe (bei Referenz)"
 
-#: people/models.py:107
+#: people/models.py:105
 msgid "Class Level Reference"
 msgstr "Klassenstufen-Referenz"
 
-#: people/models.py:112
+#: people/models.py:110
 msgid "District School"
 msgstr "Einzugsschule"
 
-#: people/models.py:114
+#: people/models.py:112
 msgid "in After-school Care"
 msgstr "in Nachmittagsbetreuung"
 
-#: people/models.py:115
+#: people/models.py:113
 msgid "Privacy Policy Agreement"
 msgstr "Datenschutzerklärung"
 
-#: people/models.py:116
+#: people/models.py:114
 msgid "Vaccination Policy Agreement"
 msgstr "Infektionsschutzgesetz"
 
-#: people/models.py:117
+#: people/models.py:115
 msgid "Sibling"
 msgstr "Geschwisterkind"
 
-#: people/models.py:126
+#: people/models.py:118
+msgid "Planned Enrollment and Age"
+msgstr "Geplante Einschulung (und Alter)"
+
+#: people/models.py:119
+msgid "Application Note"
+msgstr "Anmerkung zur Bewerbung"
+
+#: people/models.py:120
+msgid "Waitlist Position"
+msgstr "Position Warteliste"
+
+#: people/models.py:132
 msgid "Note"
 msgstr "Notiz"
 
-#: people/models.py:127
+#: people/models.py:133
 msgid "Notes"
 msgstr "Notizen"
 
-#: people/models.py:129
+#: people/models.py:135
 msgid "Content"
 msgstr "Inhalt"
 
-#: people/models.py:130
+#: people/models.py:136
 msgid "Date"
 msgstr "Datum"
 
-#: people/models.py:131
+#: people/models.py:137
 msgid "Archived"
 msgstr "Archiviert"
 
@@ -289,6 +297,15 @@ msgstr ""
 #: people/templates/admin/base_site.html:9
 msgid "Django administration"
 msgstr ""
+
+#~ msgid "Active Student"
+#~ msgstr "Aktuell SchülerIn dieser Schule"
+
+#~ msgid "Declaration of Intent"
+#~ msgstr "Absichtserklärung"
+
+#~ msgid "sitting in"
+#~ msgstr "Hospitation"
 
 #~ msgid "Contract #"
 #~ msgstr "Schulvertrag #"

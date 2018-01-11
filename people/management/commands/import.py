@@ -31,19 +31,25 @@ class Command(BaseCommand):
 				entry_nr = int(row["Eingangsnummer"])
 				student, created = Student.objects.get_or_create(entry_nr=entry_nr);
 
-				contract_nr = row["Schulvertrag Nummer"];
-				student.contract_nr = int(contract_nr) if contract_nr else None
-
 				if row["Geschlecht"] == "m": student.gender = "m";
 				if row["Geschlecht"] == "w": student.gender = "f";
 				student.denomination = row["Konfession"]
 				student.citizenship = row["Staatsangehörigkeit"]
 
-				student.status = "active";
+				student.status = row["Status"];
+
+				student.application_note = row["Anmerkung"];
+
+				if (student.status == "intent_declared"):
+					student.planned_enrollment = row["Alter Einschulung"];
+
+				if (student.status == "waitlisted"):
+					student.waitlist_position = row["PlatzWarteliste"]
 
 				student.level_ref = 2017;
-				student.level_ofs = int(row["Klassenstufe 17/18"]);
-				student.first_enrollment = 2018 - int(row["Klassenstufe 17/18"]);
+				if (row["Klassenstufe 17/18"]!=""):
+					student.level_ofs = int(row["Klassenstufe 17/18"]);
+					student.first_enrollment = 2018 - int(row["Klassenstufe 17/18"]);
 
 				student.privacy_policy_agreement = (row["Datenschutzerklärung"] != "")
 				student.vaccination_policy_agreement = (row["Infektionsschutzgesetz"] != "");
@@ -53,7 +59,8 @@ class Command(BaseCommand):
 				student.first_name = row["Vorname/n"]
 				student.name = row["Name Schüler"]
 				student.short_name = student.first_name.split()[0]+" "+student.name[0];
-				student.dob = datetime.strptime(row["Geburtsdatum"], "%m/%d/%y")
+				if row["Geburtsdatum"]: 
+					student.dob = datetime.strptime(row["Geburtsdatum"], "%m/%d/%y")
 				student.pob = row["Geburtsort"];
 
 				student.address = self.add_address(row["Straße"], row["Stadt"])
@@ -73,21 +80,29 @@ class Command(BaseCommand):
 			addr = self.add_address(street, city)
 
 			contact, created = Contact.objects.get_or_create(
-				name=name, first_name=first_name, kind="prs", 
-				address=addr)
+				name=name, first_name=first_name, kind="prs")
 
 			phone = self.normalize_phone(phone);
 			mobile = self.normalize_phone(mobile);
 
-			if not created:
-				if contact.phone_number != phone:
-					self.stdout.write(self.style.WARNING("Contact '%s' exists, but with different Phone Number: %s / %s; overwriting!" % (contact, contact.phone_number, phone)))
-				if contact.cellphone_number != mobile:
-					self.stdout.write(self.style.WARNING("Contact '%s' exists, but with different Mobile Phone Number: %s / %s; overwriting!" % (contact, contact.cellphone_number, mobile)))
+			if created:
+				contact.address=addr				
 
-			contact.phone_number = phone;
-			contact.cellphone_number = mobile;
-			contact.email_address = email;
+			if not created:
+				if contact.phone_number != "" and contact.phone_number != phone:
+					self.stdout.write(self.style.WARNING("Contact '%s' exists, but with different Phone Number: %s / %s; not overwriting!" % (contact, contact.phone_number, phone)))
+				elif phone:
+					contact.phone_number = phone;
+
+				if contact.cellphone_number != "" and contact.cellphone_number != mobile:
+					self.stdout.write(self.style.WARNING("Contact '%s' exists, but with different Mobile Phone Number: %s / %s; not overwriting!" % (contact, contact.cellphone_number, mobile)))
+				elif mobile:
+					contact.cellphone_number = mobile;
+
+				if contact.email_address != "" and contact.email_address != email:
+					self.stdout.write(self.style.WARNING("Contact '%s' exists, but with different EMail Address: %s / %s; not overwriting!" % (contact, contact.email_address, email)))
+				elif email:
+					contact.email_address = email;
 
 			contact.save();
 
@@ -97,6 +112,8 @@ class Command(BaseCommand):
 		return number.replace("–","-").replace(" ","").replace("o.", " oder ");
 
 	def add_address(self, str, code_and_city):
+		if str=="" or code_and_city=="": return
+
 		street = str.replace("tr.", "traße");
 
 		m = re.match("(\d+)\ (.+)", code_and_city)

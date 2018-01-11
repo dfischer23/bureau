@@ -74,18 +74,16 @@ class Student(models.Model):
         )
 
     STATUS_CHOICES = (
-        ("active", _("Active Student")),
-        ("alumnus", _("Alumnus")),
+        ("active", _("active")),
+        ("alumnus", _("alumn")),
         ("waitlisted", _("waitlisted")),
-        ("intent_declared", _("Declaration of Intent")),
+        ("intent_declared", _("intent declared")),
+        ("in_admission_procedure", _("in admission procedure")),
         ("rejected", _("rejected")),
-        ("applied", _("Application received")),
-        ("admission_dialog", _("in Admission Dialog")),
-        ("sitting", _("sitting in")),
         )
 
     entry_nr = models.IntegerField(_("Entry #"), blank=True, null=True)
-    status = models.CharField(_("Status"), max_length=20, blank=True, null=True, choices=STATUS_CHOICES)
+    status = models.CharField(_("Status"), max_length=32, blank=True, null=True, choices=STATUS_CHOICES)
 
     short_name = models.CharField( _("Short Name"), max_length=100)
     name = models.CharField(_("Last Name"), max_length=200)
@@ -116,6 +114,14 @@ class Student(models.Model):
     vaccination_policy_agreement = models.NullBooleanField(_("Vaccination Policy Agreement"))
     is_sibling = models.NullBooleanField(_("Sibling"))
 
+# Bewerbungsverfahren:
+    planned_enrollment = models.CharField(_("Planned Enrollment and Age"), max_length=200, blank=True, null=True)
+    application_note = models.CharField(_("Application Note"), max_length=500, blank=True, null=True)
+    waitlist_position = models.IntegerField(_("Waitlist Position"), blank=True, null=True)
+
+#        ("applied", _("Application received")),
+#        ("admission_dialog", _("in Admission Dialog")),
+#        ("sitting", _("sitting in")),
 
     def __str__(self):
         return self.name + ", " + self.first_name
