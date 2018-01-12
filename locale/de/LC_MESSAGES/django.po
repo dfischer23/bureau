@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-12 09:37+0000\n"
+"POT-Creation-Date: 2018-01-12 10:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,43 +26,43 @@ msgstr "Alle"
 msgid "Status"
 msgstr "Status"
 
-#: people/admin.py:105
+#: people/admin.py:104
 msgid "Application"
 msgstr "Bewerbungsverfahren"
 
-#: people/admin.py:112
+#: people/admin.py:111
 msgid "Waitlist"
 msgstr "Warteliste"
 
-#: people/admin.py:120 people/admin.py:169
+#: people/admin.py:119 people/admin.py:167
 msgid "Class Level"
 msgstr "Klassenstufe"
 
-#: people/admin.py:128
+#: people/admin.py:127
 msgid "Formalities"
 msgstr "Formalitäten"
 
-#: people/admin.py:136
+#: people/admin.py:135
 msgid "Edit Guardians"
 msgstr "Erziehungsberechtigte bearbeiten"
 
-#: people/admin.py:154 people/models.py:108
+#: people/admin.py:153 people/models.py:108
 msgid "Guardians"
 msgstr "Erziehungsberechtigte"
 
-#: people/admin.py:158 people/models.py:39
+#: people/admin.py:157 people/models.py:39
 msgid "Name"
 msgstr "Name"
 
-#: people/admin.py:213 people/models.py:67
+#: people/admin.py:199 people/models.py:67
 msgid "Students"
 msgstr "SchülerInnen"
 
-#: people/admin.py:234
+#: people/admin.py:220
 msgid "Students at this Address"
 msgstr "SchülerInnen an dieser Adresse"
 
-#: people/admin.py:243
+#: people/admin.py:229
 msgid "Contacts at this Address"
 msgstr "Kontakte an dieser Adresse"
 
@@ -150,7 +150,7 @@ msgstr "Teammitglied"
 msgid "Infinita-EMail"
 msgstr "Infinita-EMail"
 
-#: people/models.py:66 people/models.py:139
+#: people/models.py:66 people/models.py:141
 msgid "Student"
 msgstr "SchülerIn"
 
@@ -282,23 +282,43 @@ msgstr "Anmerkung zur Bewerbung"
 msgid "Waitlist Position"
 msgstr "Position Warteliste"
 
-#: people/models.py:133
+#: people/models.py:123
+msgid "Application received"
+msgstr "Bewerbung erhalten"
+
+#: people/models.py:124
+msgid "was present at obligatory parent conference"
+msgstr "Obl. EA"
+
+#: people/models.py:125
+msgid "Parent Dialog"
+msgstr "Elterngespräch"
+
+#: people/models.py:126
+msgid "Confirmation"
+msgstr "(vorl.) Zusage"
+
+#: people/models.py:127
+msgid "Sitting In"
+msgstr "Hospitation"
+
+#: people/models.py:135
 msgid "Note"
 msgstr "Notiz"
 
-#: people/models.py:134
+#: people/models.py:136
 msgid "Notes"
 msgstr "Notizen"
 
-#: people/models.py:136
+#: people/models.py:138
 msgid "Content"
 msgstr "Inhalt"
 
-#: people/models.py:137
+#: people/models.py:139
 msgid "Date"
 msgstr "Datum"
 
-#: people/models.py:138
+#: people/models.py:140
 msgid "Archived"
 msgstr "Archiviert"
 
@@ -309,15 +329,3 @@ msgstr ""
 #: people/templates/admin/base_site.html:9
 msgid "Django administration"
 msgstr ""
-
-#~ msgid "Active Student"
-#~ msgstr "Aktuell SchülerIn dieser Schule"
-
-#~ msgid "Declaration of Intent"
-#~ msgstr "Absichtserklärung"
-
-#~ msgid "sitting in"
-#~ msgstr "Hospitation"
-
-#~ msgid "Contract #"
-#~ msgstr "Schulvertrag #"

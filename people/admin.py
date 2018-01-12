@@ -74,7 +74,7 @@ class StudentAdmin(admin.ModelAdmin):
         if status == "active":
             return ("name", "first_name", "calc_level")
         elif status == "in_admission_procedure":
-            return ("name", "first_name", "is_sibling", "application_note")
+            return ("name", "first_name", "is_sibling", "application_received", "obligatory_conference", "parent_dialog", "confirmation_status", "sitting", "application_note")
         elif status == "intent_declared":
             return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "is_sibling", "application_note")
         elif status == "waitlisted":
@@ -86,8 +86,7 @@ class StudentAdmin(admin.ModelAdmin):
 
         return ("name", "first_name", "status")
 
-    search_fields = ["first_name", "name"]
-#    list_filter = ("status",)
+    search_fields = ["first_name", "name", "planned_enrollment_year"]
     list_filter = (StudentStatusFilter,)
     filter_horizontal = ("guardians",)
     readonly_fields = ("guardians_links","calc_level")
@@ -105,8 +104,10 @@ class StudentAdmin(admin.ModelAdmin):
             fieldsets += ((_("Application"), {
                         "fields":(
                         "application_note",
+                        "application_received", "obligatory_conference", "parent_dialog", "confirmation_status", "sitting",
                         "planned_enrollment_year", "planned_enrollment_age"
                     )}),)
+
 
         if obj.status == "waitlisted":
             fieldsets += ((_("Waitlist"), {
@@ -164,7 +165,6 @@ class StudentAdmin(admin.ModelAdmin):
     	current_year = today.year-1 if today.month < 8 else today.year
     	level =  current_year - (int(obj.level_ref) - int(obj.level_ofs))
     	return(level)
-        #return("%i (for %i/%i)" % (level, current_year, current_year+1));
         
     calc_level.short_description = _("Class Level")
 
@@ -176,18 +176,6 @@ class StudentAdmin(admin.ModelAdmin):
         return qs;
 
 admin.site.register(Student, StudentAdmin)
-
-
-
-#class ContactInline(admin.TabularInline):
-#    extra = 0
-#    model = Contact
-#    classes = ["collapse"]
-
-#class StudentAddressInline(admin.TabularInline):
-#    extra = 0
-#    model = Student
-#    fields = ("name", "first_name")
 
 
 class ContactAdmin(admin.ModelAdmin):

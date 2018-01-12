@@ -120,9 +120,11 @@ class Student(models.Model):
     application_note = models.CharField(_("Application Note"), max_length=500, blank=True, null=True)
     waitlist_position = models.IntegerField(_("Waitlist Position"), blank=True, null=True)
 
-#        ("applied", _("Application received")),
-#        ("admission_dialog", _("in Admission Dialog")),
-#        ("sitting", _("sitting in")),
+    application_received = models.NullBooleanField(_("Application received"))
+    obligatory_conference = models.NullBooleanField(_("was present at obligatory parent conference"))
+    parent_dialog = models.CharField(_("Parent Dialog"), max_length=32, blank=True, null=True)
+    confirmation_status = models.CharField(_("Confirmation"), max_length=32, blank=True, null=True)
+    sitting = models.CharField(_("Sitting In"), max_length=32, blank=True, null=True)
 
     def __str__(self):
         return self.name + ", " + self.first_name

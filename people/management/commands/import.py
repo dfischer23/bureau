@@ -57,6 +57,12 @@ class Command(BaseCommand):
 				if (student.status == "waitlisted"):
 					student.waitlist_position = row["PlatzWarteliste"]
 
+				if (student.status == "in_admission_procedure"):
+					student.application_received = row["Bewerbung da"]=="ja"
+					student.obligatory_conference = row["Obl. EA"]=="ja"
+					student.parent_dialog = row["EG"]
+					student.confirmation_status = row["zugesagt"]
+
 				student.level_ref = 2017;
 				if (row["Klassenstufe 17/18"]!=""):
 					student.level_ofs = int(row["Klassenstufe 17/18"]);
