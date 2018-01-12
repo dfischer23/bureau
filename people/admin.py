@@ -93,36 +93,56 @@ class StudentAdmin(admin.ModelAdmin):
        NoteInline,
     ]
 
-    fieldsets = (
-    	(None, {
-    		"fields": ("short_name", "name", "first_name", "status", "dob", "pob", "address", "guardians_links")
-    		}),
-    	(_("Class Level"), {
-    		"fields":(
-                "first_day", "last_day",
-    			"first_enrollment",
-    			"calc_level",
-    			"level_ofs", "level_ref"
-    		)}),
-        (_("Formalities"), {
-            "classes":("collapse",),
-            "fields":(
-                "gender", "language",
-                "citizenship", "denomination",
-                "after_school_care", "district_school",
-                "privacy_policy_agreement", "vaccination_policy_agreement", "is_sibling"
-            )}),
-        (_("Application"), {
-            "classes":("collapse",),
-            "fields":(
-                "planned_enrollment", "application_note", "waitlist_position"
-            )}),
-    	(_("Edit Guardians"), {
-    		"classes":("collapse",),
-    		"fields": (
-    			"guardians",
-    		)})
-    	)
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = (
+                (None, {
+                    "fields": ("short_name", "name", "first_name", "status", "dob", "pob", "address", "guardians_links")
+                }),)
+
+        if obj.status == "in_admission_procedure":
+            fieldsets += ((_("Application"), {
+                        "fields":(
+                        "planned_enrollment", "application_note"
+                    )}),)
+
+        if obj.status == "intent_declared":
+            fieldsets += ((_("Application"), {
+                        "fields":(
+                        "planned_enrollment", "application_note"
+                    )}),)
+
+        if obj.status == "waitlisted":
+            fieldsets += ((_("Waitlist"), {
+                        "fields":(
+                        "waitlist_position", "planned_enrollment", "application_note"
+                    )}),)
+
+        fieldsets += (
+                (_("Class Level"), {
+                    "classes":("collapse",),
+                    "fields":(
+                    "first_day", "last_day",
+                    "first_enrollment",
+                    "level_ofs", "level_ref",
+                    "calc_level"
+                )}),
+                (_("Formalities"), {
+                    "classes":("collapse",),
+                    "fields":(
+                    "gender", "language",
+                    "citizenship", "denomination",
+                    "after_school_care", "district_school",
+                    "privacy_policy_agreement", "vaccination_policy_agreement", "is_sibling"
+                )}),
+                (_("Edit Guardians"), {
+                    "classes":("collapse",),
+                    "fields": (
+                    "guardians",
+                )})
+            )
+
+        return fieldsets;
+    	
 
     def guardians_links(self, obj):
         guardians = obj.guardians.all()
