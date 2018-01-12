@@ -51,7 +51,7 @@ class Command(BaseCommand):
 					else:
 						student.planned_enrollment_year = src;
 					
-					self.stdout.write("Einschulung '%s' -> '%s' / '%s'" % (src, student.planned_enrollment_year, student.planned_enrollment_age));
+#					self.stdout.write("Einschulung '%s' -> '%s' / '%s'" % (src, student.planned_enrollment_year, student.planned_enrollment_age));
 
 
 				if (student.status == "waitlisted"):
@@ -65,7 +65,8 @@ class Command(BaseCommand):
 				student.privacy_policy_agreement = (row["Datenschutzerklärung"] != "")
 				student.vaccination_policy_agreement = (row["Infektionsschutzgesetz"] != "");
 
-				# student.is_sibling TODO
+				if row["Anmerkung"].find("eschwister") >= 0:
+					student.is_sibling = True
 
 				student.first_name = row["Vorname/n"]
 				student.name = row["Name Schüler"]

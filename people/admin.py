@@ -74,9 +74,9 @@ class StudentAdmin(admin.ModelAdmin):
         if status == "active":
             return ("name", "first_name", "calc_level")
         elif status == "in_admission_procedure":
-            return ("name", "first_name", "application_note")
+            return ("name", "first_name", "is_sibling", "application_note")
         elif status == "intent_declared":
-            return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "application_note")
+            return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "is_sibling", "application_note")
         elif status == "waitlisted":
             return ("name", "first_name", "waitlist_position", "application_note")
         elif status == "alumnus":
