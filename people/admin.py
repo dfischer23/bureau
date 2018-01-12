@@ -68,7 +68,22 @@ class NoteInline(admin.TabularInline):
 
 class StudentAdmin(admin.ModelAdmin):
     model = Student
-    list_display = ("short_name", "name", "first_name", "calc_level", "status")
+    def get_list_display(self, request, obj=None):
+        status = request.GET.get("status__exact", "active")
+
+        if status == "active":
+            return ("name", "first_name", "calc_level")
+        elif status == "in_admission_procedure":
+            return ("name", "first_name", "application_note")
+        elif status == "intent_declared":
+            return ("name", "first_name", "planned_enrollment", "application_note")
+        elif status == "waitlisted":
+            return ("name", "first_name", "waitlist_position", "application_note")
+        elif status == "alumnus":
+            return ("name", "first_name", "last_day", "application_note")
+
+        return ("name", "first_name", "status")
+
     search_fields = ["first_name", "name"]
 #    list_filter = ("status",)
     list_filter = (StudentStatusFilter,)
@@ -156,28 +171,6 @@ admin.site.register(Student, StudentAdmin)
 #    fields = ("name", "first_name")
 
 
-# def export_csv(modeladmin, request, queryset):
-#     import csv
-#     from django.utils.encoding import smart_str
-#     response = HttpResponse(content_type='text/csv')
-#     response['Content-Disposition'] = 'attachment; filename=test.csv'
-#     writer = csv.writer(response, csv.excel)
-#     response.write(u'\ufeff'.encode('utf8'))
-#     writer.writerow([
-#         smart_str(_("ID")),
-#         smart_str(_("Name")),
-#         smart_str(_("Phone Numbers")),
-#     ])
-#     for obj in queryset:
-#         writer.writerow([
-#             smart_str(obj.pk),
-#             smart_str(obj.name),
-#             smart_str(obj.phonenumber_set.all())
-#         ])
-#     return response
-# export_csv.short_description = _("Export CSV")
-
-
 class ContactAdmin(admin.ModelAdmin):
     model = Contact
     list_display = ("name","first_name","kind","phone_number","cellphone_number","email_address")
@@ -185,11 +178,10 @@ class ContactAdmin(admin.ModelAdmin):
     list_filter = ("kind",)
     readonly_fields = ("student_links",)
 
-    fieldsets = (
-        (None, {
-            "fields": ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "on_address_list", "is_teammember", "team_email_address", "student_links")
-            }),
-        );
+    def get_fields(self, request, obj=None):
+        if obj.is_teammember:
+            return ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "is_teammember", "team_email_address", "student_links")
+        return ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "on_address_list", "is_teammember", "student_links")
 
     def student_links(self, obj):
         students = obj.students.all()
