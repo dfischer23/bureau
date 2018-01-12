@@ -89,8 +89,10 @@ class StudentAdmin(admin.ModelAdmin):
             return ("name", "first_name", "last_day", "application_note")
         elif status == "cancelled":
             return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "application_note")
+        elif status == "special":
+            return ("name", "first_name", "first_day", "last_day", "application_note")
 
-        return ("name", "first_name", "status")
+        return ("name", "first_name", "status", "application_note")
 
     actions = ["email_list","change_status"];
 

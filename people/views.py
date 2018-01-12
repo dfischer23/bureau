@@ -114,3 +114,118 @@ def students_csv(request, status="active"):
 				" und ".join(guardian_names)])
 
 		return response;
+
+
+
+from datetime import date, datetime
+import math
+
+def calc_level(student, cutoff_date):
+	if not student.level_ref or not student.level_ofs:
+		return "N/A"
+	current_year = cutoff_date.year-1 if cutoff_date.month < 8 else cutoff_date.year
+	level =  current_year - (int(student.level_ref) - int(student.level_ofs))
+	return(level)
+
+
+@login_required
+def level_report(request):
+		response = HttpResponse(content_type="text/plain; charset=utf-8")
+#		response["Content-Disposition"] = "attachment;filename=list.csv"
+
+
+		# we want to group into two levels (primary 1-4/secondary 5-9)
+		groups = [ range(1,5), range(5,10) ]
+
+		# iterate a school year, produce a list of dates, one for each month
+		year = 2010
+		report_duration = 8
+		first_month_of_schoolyear = 6
+		dates = list(map(
+					lambda month: date(year + math.floor(month/12), (month%12)+1, 1), 
+					range(first_month_of_schoolyear-1, first_month_of_schoolyear+(12*report_duration))))
+
+		response.write("Bericht Klassenstufen (%r - %r)\n\n" % (year, year+report_duration));
+
+		enrollment_at_date = ()
+
+		last_students = []
+
+		# now for each of those dates
+		for cutoff_date in dates:
+			enrolled_at_level = {}
+			response.write("%s:\n" % cutoff_date.strftime("%m/%Y"))
+
+			came = []
+			left = []
+
+			# and each active student
+			for student in Student.objects.all().filter(status="active"):
+				# if the student doesnt have a first_day, construct it from first_enrollment
+				if not student.first_day:
+					student.first_day = date(student.first_enrollment, 8, 1)
+					#maybe: student.save();
+
+				# see if the student was enrolled
+				enrolled_before = not student.first_day or student.first_day <= cutoff_date
+				enrolled_after = not student.last_day or student.last_day >= cutoff_date
+				enrolled = enrolled_before and enrolled_after
+
+				if enrolled:
+					# calculate the students class level at that date
+					level = calc_level(student, cutoff_date)
+
+					# create a list at that level if it doesnt exist
+					if not level in enrolled_at_level: enrolled_at_level[level] = []
+
+					# add the student to its level
+					enrolled_at_level[level].append(student)
+
+					# if she's not in last_students, she "came"
+					if not student in last_students:
+						came.append(student)
+						last_students.append(student)
+
+				else:
+					# if she's in last_students, she "left"
+					if student in last_students:
+						left.append(student)
+						last_students.remove(student)
+
+				# just print that info
+#				response.write("\t%s %r %r\n" % ("✓" if enrolled else "✗", level, student) );
+
+			# print those that came or left
+			if came:
+				response.write("\tZugegangen:\n")
+				for student in came:
+					response.write("\t\t%s, %s (%s)\n" % (student.name, student.first_name, student.first_day.strftime("%d.%m.%Y")))
+					
+			if left:
+				response.write("\tAbgegangen:\n")
+				for student in left:
+					response.write("\t\t%s, %s (%s)\n" % (student.name, student.first_name, student.last_day.strftime("%d.%m.%Y")))
+
+			# now, for this date, we group
+			for group in groups:
+				count = 0
+				for level in group:
+					if level in enrolled_at_level:
+						count += len(enrolled_at_level[level])
+
+				response.write("  %i-%i : %r\n" % (group.start, group.stop-1, count))
+					
+
+#			response.write("%r\n" % enrolled_at_level)
+			response.write("\n")
+
+			# no
+
+
+		# iterate students
+#		for student in Student.objects.all().filter(status="active"):
+#			response.write( student.name+", "+student.first_name+" "+calc_level(student)+"\n");
+
+
+		return response;
+

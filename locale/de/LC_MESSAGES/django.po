@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-12 14:57+0000\n"
+"POT-Creation-Date: 2018-01-12 17:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,57 +26,57 @@ msgstr "Alle"
 msgid "Status"
 msgstr "Status"
 
-#: people/admin.py:112
+#: people/admin.py:114
 msgid "Application"
 msgstr "Bewerbungsverfahren"
 
-#: people/admin.py:121
+#: people/admin.py:123
 msgid "Waitlist"
 msgstr "Warteliste"
 
-#: people/admin.py:129 people/admin.py:177
+#: people/admin.py:131 people/admin.py:179
 msgid "Class Level"
 msgstr "Klassenstufe"
 
-#: people/admin.py:137
+#: people/admin.py:139
 msgid "Formalities"
 msgstr "Formalitäten"
 
-#: people/admin.py:145
+#: people/admin.py:147
 msgid "Edit Guardians"
 msgstr "Erziehungsberechtigte bearbeiten"
 
-#: people/admin.py:163 people/models.py:109
+#: people/admin.py:165 people/models.py:109
 msgid "Guardians"
 msgstr "Erziehungsberechtigte"
 
-#: people/admin.py:167 people/models.py:39
+#: people/admin.py:169 people/models.py:39
 msgid "Name"
 msgstr "Name"
 
-#: people/admin.py:197
+#: people/admin.py:199
 #, python-format
 msgid "Changed status (to '%(status)s') on %(count)s students"
 msgstr "Status bei %(count)s SchülerInnen auf '%(status)s' geändert "
 
-#: people/admin.py:204 people/templates/admin/change_status.html:13
-#: people/templates/admin/change_status.html:35
+#: people/admin.py:206 people/templates/admin/change_status.html:11
+#: people/templates/admin/change_status.html:33
 msgid "Change Status"
 msgstr "Status ändern"
 
-#: people/admin.py:233
+#: people/admin.py:226
 msgid "Export Guardian EMail addresses"
 msgstr "EMail-Liste der Erziehungsberechtigten anzeigen"
 
-#: people/admin.py:259 people/models.py:67
+#: people/admin.py:252 people/models.py:67
 msgid "Students"
 msgstr "SchülerInnen"
 
-#: people/admin.py:280
+#: people/admin.py:273
 msgid "Students at this Address"
 msgstr "SchülerInnen an dieser Adresse"
 
-#: people/admin.py:289
+#: people/admin.py:282
 msgid "Contacts at this Address"
 msgstr "Kontakte an dieser Adresse"
 
@@ -165,7 +165,7 @@ msgid "Infinita-EMail"
 msgstr "Infinita-EMail"
 
 #: people/models.py:66 people/models.py:142
-#: people/templates/admin/change_status.html:46
+#: people/templates/admin/change_status.html:43
 msgid "Student"
 msgstr "SchülerIn"
 
@@ -207,7 +207,7 @@ msgstr "Ehemalig"
 
 #: people/models.py:83
 msgid "special"
-msgstr ""
+msgstr "Ausnahme"
 
 #: people/models.py:86
 msgid "Entry #"
@@ -349,26 +349,26 @@ msgstr ""
 msgid "Django administration"
 msgstr ""
 
-#: people/templates/admin/change_status.html:17
+#: people/templates/admin/change_status.html:15
 msgid "This Action will change the status of all selected students."
 msgstr "Diese Aktion ändert den Status bei allen ausgewählten SchülerInnen"
 
-#: people/templates/admin/change_status.html:20
+#: people/templates/admin/change_status.html:18
 msgid "Warning:"
 msgstr "Warnung:"
 
-#: people/templates/admin/change_status.html:20
+#: people/templates/admin/change_status.html:18
 msgid "This cannot be easily undone!"
 msgstr "Dies kann nicht einfach rückgängig gemacht werden!"
 
-#: people/templates/admin/change_status.html:26
+#: people/templates/admin/change_status.html:24
 msgid "New Status:"
 msgstr "Neuer Status:"
 
-#: people/templates/admin/change_status.html:40
+#: people/templates/admin/change_status.html:37
 msgid "New Status will be applied to:"
 msgstr "Neuer Status wird bei folgenden SchülerInnen gesetzt:"
 
-#: people/templates/admin/change_status.html:47
+#: people/templates/admin/change_status.html:44
 msgid "Current Status"
 msgstr "Derzeitiger Status"
