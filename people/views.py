@@ -87,40 +87,7 @@ def list_excel(request):
 
 	return response
 
-# for testing only
 @login_required
-def list_csv(request):
-		response = HttpResponse(content_type="text/csv")
-		response["Content-Disposition"] = "attachment;filename=list.csv"
-
-		writer = csv.writer(response)
-		writer.writerow(["Name", "Vorname", "Geburtsdatum", "Strasse", "Ort", "Telefon", "Handy", "E-Mail"])
-
-		printed = []
-
-		for student in Student.objects.all():
-
-			if not student.id in printed:
-				# get this student's guardians
-				guardians = student.guardians.all()
-
-				# actually print the first guardians's students
-				for child in guardians[0].students.all():
-					writer.writerow([child.name, child.first_name, child.dob.strftime("%d.%m.%Y")])
-					printed.append(child.id)
-
-
-				# print all guardians
-				for guardian in guardians:
-					writer.writerow([guardian.name, guardian.first_name, "",
-						guardian.address.street, guardian.address.postal_code+" "+guardian.address.city,
-						guardian.phone_number, guardian.cellphone_number, guardian.email_address
-						])
-
-
-		return response;
-
-#@login_required
 def students_csv(request, status="active"):
 		response = HttpResponse(content_type="text/csv")
 		response["Content-Disposition"] = "attachment;filename=list.csv"

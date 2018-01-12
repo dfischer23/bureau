@@ -205,30 +205,21 @@ class StudentAdmin(admin.ModelAdmin):
 
     # "export" to email address list
     def email_list(self, request, queryset):
-        response = HttpResponse(content_type="text/plain; charset=utf-8")
-        response.write("Hier sind alle E-Mail-Adressen der Erziehungsberechtigten der ausgewählten SchülerInnen:\n\n")
-        printed = []
+        the_list = []
         orphans = []
         for student in queryset:
             a_guardian_has_an_email = False
             for guardian in student.guardians.all():
                 if guardian.email_address:
                     a_guardian_has_an_email = True
-                    if not guardian in printed and guardian.email_address:
-                        printed.append(guardian)
-                        response.write(guardian.first_name+" "+guardian.name+" <"+guardian.email_address+">, ")
+                    if not guardian in the_list and guardian.email_address:
+                        the_list.append(guardian)
 
             if not a_guardian_has_an_email:
                 orphans.append(student)
 
+        return render(request, "admin/bulk_email.html", context={"guardians":the_list, "orphans":orphans, "students":queryset})
 
-        if orphans:
-            response.write("\n\n\nAber Vorsicht: Für folgende SchülerInnen konnte kein Erziehungsberechtigter mit E-Mail-Adresse gefunden werden:\n\n");
-            for student in orphans:
-                response.write("%s %s\n" % (student.first_name, student.name))
-
-
-        return response
 
     email_list.short_description = _("Export Guardian EMail addresses")
 
