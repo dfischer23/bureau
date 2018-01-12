@@ -80,6 +80,7 @@ class Student(models.Model):
         ("intent_declared", _("intent declared")),
         ("cancelled", _("rejected/expired")),
         ("alumnus", _("alumn")),
+        ("special", _("special")),
         )
 
     entry_nr = models.IntegerField(_("Entry #"), blank=True, null=True)

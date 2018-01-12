@@ -3,7 +3,6 @@ from django.core import urlresolvers
 from django.utils.html import format_html
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
-from django.contrib.admin.helpers import ActionForm
 
 from .models import *
 from django import forms
@@ -12,6 +11,10 @@ from datetime import date
 
 from django.utils.encoding import force_text
 from django.db.models import F, ExpressionWrapper, IntegerField
+
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 # set a default filter option [https://stackoverflow.com/questions/851636/default-filter-in-django-admin]
 class DefaultListFilter(admin.SimpleListFilter):
@@ -55,7 +58,6 @@ class StudentStatusFilter(DefaultListFilter):
         return "active"
 
 
-
 class NoteForm(forms.ModelForm):
     class Meta:
         widgets = {"content": forms.Textarea(attrs={"rows": 4, "cols":50 })}
@@ -66,52 +68,11 @@ class NoteInline(admin.TabularInline):
     form = NoteForm
     fields = ("content",)
 
-# "export" to email address list
-def action_email_list(modeladmin, request, queryset):
-    response = HttpResponse(content_type="text/plain; charset=utf-8")
-    response.write("Hier sind alle E-Mail-Adressen der Erziehungsberechtigten der ausgewählten SchülerInnen:\n\n")
-    printed = []
-    orphans = []
-    for student in queryset:
-        a_guardian_has_an_email = False
-        for guardian in student.guardians.all():
-            if guardian.email_address:
-                a_guardian_has_an_email = True
-                if not guardian in printed and guardian.email_address:
-                    printed.append(guardian)
-                    response.write(guardian.first_name+" "+guardian.name+" <"+guardian.email_address+">, ")
-
-        if not a_guardian_has_an_email:
-            orphans.append(student)
-
-
-    if orphans:
-        response.write("\n\n\nAber Vorsicht: Für folgende SchülerInnen konnte kein Erziehungsberechtigter mit E-Mail-Adresse gefunden werden:\n\n");
-        for student in orphans:
-            response.write("%s %s\n" % (student.first_name, student.name))
-
-
-    return response
-
-action_email_list.short_description = _("Export Guardian EMail addresses")
-
-
-# change status to "in_admission_procedure":
-def action_change_status(modeladmin, request, queryset):
-    status = request.POST['status']
-    queryset.update(status = status)
-#    response = HttpResponse(content_type="text/plain; charset=utf-8")
-#    response.write("Would change status of selected students to: "+status)
-#    return response;
-
-action_change_status.short_description = _("Change Status of selected students")
-
-
-class StudentActionForm(ActionForm):
-    status = forms.ChoiceField(choices=Student.STATUS_CHOICES)
 
 
 class StudentAdmin(admin.ModelAdmin):
+
+
     model = Student
     def get_list_display(self, request, obj=None):
         status = request.GET.get("status__exact", "active")
@@ -131,18 +92,7 @@ class StudentAdmin(admin.ModelAdmin):
 
         return ("name", "first_name", "status")
 
-    def get_actions(self, request):
-        actions = super().get_actions(request)
-
-        actions["action_email_list"] = (action_email_list,"action_email_list",action_email_list.short_description);
-
-        status = request.GET.get("status__exact", "active")
-#        if status == "intent_declared":
-        actions["action_change_status"] = (action_change_status,"action_change_status",action_change_status.short_description);
-
-        return actions
-
-    action_form = StudentActionForm
+    actions = ["email_list","change_status"];
 
     search_fields = ["first_name", "name", "planned_enrollment_year"]
     list_filter = (StudentStatusFilter,)
@@ -232,6 +182,55 @@ class StudentAdmin(admin.ModelAdmin):
         qs = super(StudentAdmin, self).get_queryset(request)
         qs = qs.annotate(level=ExpressionWrapper(F("level_ref")-F("level_ofs"), output_field=IntegerField())).order_by("level")
         return qs;
+
+    # Bulk-change status
+    class ChangeStatusForm(forms.Form):
+        status = forms.ChoiceField(choices=Student.STATUS_CHOICES)
+
+    def change_status(self, request, queryset):
+        if "apply" in request.POST:
+            form = self.ChangeStatusForm(request.POST)
+            if form.is_valid():
+                status = form.cleaned_data["status"]
+                status_label = dict(Student.STATUS_CHOICES)[status]
+                updated = queryset.update(status=status)
+                messages.success(request, _("Changed status (to '%(status)s') on %(count)s students") % {"status":status_label, "count":updated})
+
+            return HttpResponseRedirect(request.get_full_path())
+
+        form = self.ChangeStatusForm();
+        return render(request, "admin/change_status.html", context={"students":queryset, "form":form });
+
+    change_status.short_description = _("Change Status")
+
+    # "export" to email address list
+    def email_list(self, request, queryset):
+        response = HttpResponse(content_type="text/plain; charset=utf-8")
+        response.write("Hier sind alle E-Mail-Adressen der Erziehungsberechtigten der ausgewählten SchülerInnen:\n\n")
+        printed = []
+        orphans = []
+        for student in queryset:
+            a_guardian_has_an_email = False
+            for guardian in student.guardians.all():
+                if guardian.email_address:
+                    a_guardian_has_an_email = True
+                    if not guardian in printed and guardian.email_address:
+                        printed.append(guardian)
+                        response.write(guardian.first_name+" "+guardian.name+" <"+guardian.email_address+">, ")
+
+            if not a_guardian_has_an_email:
+                orphans.append(student)
+
+
+        if orphans:
+            response.write("\n\n\nAber Vorsicht: Für folgende SchülerInnen konnte kein Erziehungsberechtigter mit E-Mail-Adresse gefunden werden:\n\n");
+            for student in orphans:
+                response.write("%s %s\n" % (student.first_name, student.name))
+
+
+        return response
+
+    email_list.short_description = _("Export Guardian EMail addresses")
 
 
 admin.site.register(Student, StudentAdmin)
