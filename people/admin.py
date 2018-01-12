@@ -44,7 +44,7 @@ class DefaultListFilter(admin.SimpleListFilter):
             }
 
 class StudentStatusFilter(DefaultListFilter):
-    title = _('Status ')
+    title = _('Status')
     parameter_name = 'status__exact'
 
     def lookups(self, request, model_admin):
@@ -76,11 +76,13 @@ class StudentAdmin(admin.ModelAdmin):
         elif status == "in_admission_procedure":
             return ("name", "first_name", "application_note")
         elif status == "intent_declared":
-            return ("name", "first_name", "planned_enrollment", "application_note")
+            return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "application_note")
         elif status == "waitlisted":
             return ("name", "first_name", "waitlist_position", "application_note")
         elif status == "alumnus":
             return ("name", "first_name", "last_day", "application_note")
+        elif status == "cancelled":
+            return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "application_note")
 
         return ("name", "first_name", "status")
 
@@ -99,22 +101,19 @@ class StudentAdmin(admin.ModelAdmin):
                     "fields": ("short_name", "name", "first_name", "status", "dob", "pob", "address", "guardians_links")
                 }),)
 
-        if obj.status == "in_admission_procedure":
+        if obj.status == "in_admission_procedure" or obj.status == "intent_declared" or obj.status == "cancelled":
             fieldsets += ((_("Application"), {
                         "fields":(
-                        "planned_enrollment", "application_note"
-                    )}),)
-
-        if obj.status == "intent_declared":
-            fieldsets += ((_("Application"), {
-                        "fields":(
-                        "planned_enrollment", "application_note"
+                        "application_note",
+                        "planned_enrollment_year", "planned_enrollment_age"
                     )}),)
 
         if obj.status == "waitlisted":
             fieldsets += ((_("Waitlist"), {
                         "fields":(
-                        "waitlist_position", "planned_enrollment", "application_note"
+                        "waitlist_position", 
+                        "application_note",
+                        "planned_enrollment_year", "planned_enrollment_age"
                     )}),)
 
         fieldsets += (

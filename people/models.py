@@ -75,11 +75,11 @@ class Student(models.Model):
 
     STATUS_CHOICES = (
         ("active", _("active")),
-        ("alumnus", _("alumn")),
+        ("in_admission_procedure", _("in admission procedure")),
         ("waitlisted", _("waitlisted")),
         ("intent_declared", _("intent declared")),
-        ("in_admission_procedure", _("in admission procedure")),
-        ("rejected", _("rejected")),
+        ("cancelled", _("rejected/expired")),
+        ("alumnus", _("alumn")),
         )
 
     entry_nr = models.IntegerField(_("Entry #"), blank=True, null=True)
@@ -115,7 +115,8 @@ class Student(models.Model):
     is_sibling = models.NullBooleanField(_("Sibling"))
 
 # Bewerbungsverfahren:
-    planned_enrollment = models.CharField(_("Planned Enrollment and Age"), max_length=200, blank=True, null=True)
+    planned_enrollment_year = models.CharField(_("Enrollment Year"), max_length=32, blank=True, null=True)
+    planned_enrollment_age = models.CharField(_("Enrollment Age"), max_length=32, blank=True, null=True)
     application_note = models.CharField(_("Application Note"), max_length=500, blank=True, null=True)
     waitlist_position = models.IntegerField(_("Waitlist Position"), blank=True, null=True)
 

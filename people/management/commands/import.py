@@ -40,8 +40,19 @@ class Command(BaseCommand):
 
 				student.application_note = row["Anmerkung"];
 
-				if (student.status == "intent_declared"):
-					student.planned_enrollment = row["Alter Einschulung"];
+				if row["Alter Einschulung"]:
+					src = row["Alter Einschulung"]
+					m = re.match("\((20[0-9/]+)\)\ *([0-9/]*)$", src) # matches (2016/2017) 5/6
+					n = re.match("(20[0-9/]+)\ *\(([0-9/]*)\)$", src) # matches 2016/2017 (5/6)
+					if not m: m = n
+					if m:
+						student.planned_enrollment_year = m.group(1);
+						student.planned_enrollment_age = m.group(2);
+					else:
+						student.planned_enrollment_year = src;
+					
+					self.stdout.write("Einschulung '%s' -> '%s' / '%s'" % (src, student.planned_enrollment_year, student.planned_enrollment_age));
+
 
 				if (student.status == "waitlisted"):
 					student.waitlist_position = row["PlatzWarteliste"]
