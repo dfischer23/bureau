@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-12 10:01+0000\n"
+"POT-Creation-Date: 2018-01-12 10:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,43 +26,47 @@ msgstr "Alle"
 msgid "Status"
 msgstr "Status"
 
-#: people/admin.py:104
+#: people/admin.py:95
+msgid "Export Guardian EMail addresses"
+msgstr "EMail-Liste der Erziehungsberechtigten anzeigen"
+
+#: people/admin.py:134
 msgid "Application"
 msgstr "Bewerbungsverfahren"
 
-#: people/admin.py:111
+#: people/admin.py:143
 msgid "Waitlist"
 msgstr "Warteliste"
 
-#: people/admin.py:119 people/admin.py:167
+#: people/admin.py:151 people/admin.py:199
 msgid "Class Level"
 msgstr "Klassenstufe"
 
-#: people/admin.py:127
+#: people/admin.py:159
 msgid "Formalities"
 msgstr "Formalitäten"
 
-#: people/admin.py:135
+#: people/admin.py:167
 msgid "Edit Guardians"
 msgstr "Erziehungsberechtigte bearbeiten"
 
-#: people/admin.py:153 people/models.py:108
+#: people/admin.py:185 people/models.py:108
 msgid "Guardians"
 msgstr "Erziehungsberechtigte"
 
-#: people/admin.py:157 people/models.py:39
+#: people/admin.py:189 people/models.py:39
 msgid "Name"
 msgstr "Name"
 
-#: people/admin.py:199 people/models.py:67
+#: people/admin.py:232 people/models.py:67
 msgid "Students"
 msgstr "SchülerInnen"
 
-#: people/admin.py:220
+#: people/admin.py:253
 msgid "Students at this Address"
 msgstr "SchülerInnen an dieser Adresse"
 
-#: people/admin.py:229
+#: people/admin.py:262
 msgid "Contacts at this Address"
 msgstr "Kontakte an dieser Adresse"
 

@@ -3,6 +3,7 @@ from django.core import urlresolvers
 from django.utils.html import format_html
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
+from django.contrib.admin.helpers import ActionForm
 
 from .models import *
 from django import forms
@@ -65,6 +66,50 @@ class NoteInline(admin.TabularInline):
     form = NoteForm
     fields = ("content",)
 
+# "export" to email address list
+def action_email_list(modeladmin, request, queryset):
+    response = HttpResponse(content_type="text/plain; charset=utf-8")
+    response.write("Hier sind alle E-Mail-Adressen der Erziehungsberechtigten der ausgewählten SchülerInnen:\n\n")
+    printed = []
+    orphans = []
+    for student in queryset:
+        a_guardian_has_an_email = False
+        for guardian in student.guardians.all():
+            if guardian.email_address:
+                a_guardian_has_an_email = True
+                if not guardian in printed and guardian.email_address:
+                    printed.append(guardian)
+                    response.write(guardian.first_name+" "+guardian.name+" <"+guardian.email_address+">, ")
+
+        if not a_guardian_has_an_email:
+            orphans.append(student)
+
+
+    if orphans:
+        response.write("\n\n\nAber Vorsicht: Für folgende SchülerInnen konnte kein Erziehungsberechtigter mit E-Mail-Adresse gefunden werden:\n\n");
+        for student in orphans:
+            response.write("%s %s\n" % (student.first_name, student.name))
+
+
+    return response
+
+action_email_list.short_description = _("Export Guardian EMail addresses")
+
+
+# change status to "in_admission_procedure":
+def action_change_status(modeladmin, request, queryset):
+    status = request.POST['status']
+    queryset.update(status = status)
+#    response = HttpResponse(content_type="text/plain; charset=utf-8")
+#    response.write("Would change status of selected students to: "+status)
+#    return response;
+
+action_change_status.short_description = _("Change Status of selected students")
+
+
+class StudentActionForm(ActionForm):
+    status = forms.ChoiceField(choices=Student.STATUS_CHOICES)
+
 
 class StudentAdmin(admin.ModelAdmin):
     model = Student
@@ -86,6 +131,19 @@ class StudentAdmin(admin.ModelAdmin):
 
         return ("name", "first_name", "status")
 
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+
+        actions["action_email_list"] = (action_email_list,"action_email_list",action_email_list.short_description);
+
+        status = request.GET.get("status__exact", "active")
+#        if status == "intent_declared":
+        actions["action_change_status"] = (action_change_status,"action_change_status",action_change_status.short_description);
+
+        return actions
+
+    action_form = StudentActionForm
+
     search_fields = ["first_name", "name", "planned_enrollment_year"]
     list_filter = (StudentStatusFilter,)
     filter_horizontal = ("guardians",)
@@ -100,7 +158,7 @@ class StudentAdmin(admin.ModelAdmin):
                     "fields": ("short_name", "name", "first_name", "status", "dob", "pob", "address", "guardians_links")
                 }),)
 
-        if obj.status == "in_admission_procedure" or obj.status == "intent_declared" or obj.status == "cancelled":
+        if obj and (obj.status == "in_admission_procedure" or obj.status == "intent_declared" or obj.status == "cancelled"):
             fieldsets += ((_("Application"), {
                         "fields":(
                         "application_note",
@@ -109,7 +167,7 @@ class StudentAdmin(admin.ModelAdmin):
                     )}),)
 
 
-        if obj.status == "waitlisted":
+        if obj and obj.status == "waitlisted":
             fieldsets += ((_("Waitlist"), {
                         "fields":(
                         "waitlist_position", 
@@ -174,6 +232,7 @@ class StudentAdmin(admin.ModelAdmin):
         qs = super(StudentAdmin, self).get_queryset(request)
         qs = qs.annotate(level=ExpressionWrapper(F("level_ref")-F("level_ofs"), output_field=IntegerField())).order_by("level")
         return qs;
+
 
 admin.site.register(Student, StudentAdmin)
 
