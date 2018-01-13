@@ -119,6 +119,7 @@ def students_csv(request, status="active"):
 
 from datetime import date, datetime
 import math
+from django.db.models import Q
 
 def calc_level(student, cutoff_date):
 	if not student.level_ref or not student.level_ofs:
@@ -160,7 +161,7 @@ def level_report(request):
 			left = []
 
 			# and each active student
-			for student in Student.objects.all().filter(status="active"):
+			for student in Student.objects.all().filter(Q(status="active") | Q(status="alumnus")):
 				# if the student doesnt have a first_day, construct it from first_enrollment
 				if not student.first_day:
 					student.first_day = date(student.first_enrollment, 8, 1)
