@@ -38,7 +38,7 @@ class Command(BaseCommand):
 
 				student.status = row["Status"];
 
-				student.application_note = row["Anmerkung"];
+				student.remark = row["Anmerkung"];
 
 				if row["Alter Einschulung"]:
 					src = row["Alter Einschulung"]

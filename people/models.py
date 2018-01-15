@@ -50,6 +50,8 @@ class Contact(models.Model):
     is_teammember = models.BooleanField(_("Team Member"), default=False)
     team_email_address = models.CharField(_("Infinita-EMail"), max_length=128, blank=True)
 
+    note = models.TextField(_("Note"), blank=True)
+
     def __str__(self):
         if self.first_name:
             return self.name + ", " + self.first_name
@@ -90,6 +92,8 @@ class Student(models.Model):
     name = models.CharField(_("Last Name"), max_length=200)
     first_name = models.CharField(_("First Name"), max_length=200)
 
+    remark = models.CharField(_("Remark"), max_length=500, blank=True, null=True)
+
     dob = models.DateField(_("Date of Birth"), blank=True, null=True)
     pob = models.CharField(_("Place of Birth"), max_length=200, blank=True, null=True)
 
@@ -118,7 +122,6 @@ class Student(models.Model):
 # Bewerbungsverfahren:
     planned_enrollment_year = models.CharField(_("Enrollment Year"), max_length=32, blank=True, null=True)
     planned_enrollment_age = models.CharField(_("Enrollment Age"), max_length=32, blank=True, null=True)
-    application_note = models.CharField(_("Application Note"), max_length=500, blank=True, null=True)
     waitlist_position = models.IntegerField(_("Waitlist Position"), blank=True, null=True)
 
     application_received = models.NullBooleanField(_("Application received"))

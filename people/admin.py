@@ -80,19 +80,19 @@ class StudentAdmin(admin.ModelAdmin):
         if status == "active":
             return ("name", "first_name", "calc_level")
         elif status == "in_admission_procedure":
-            return ("name", "first_name", "is_sibling", "application_received", "obligatory_conference", "parent_dialog", "confirmation_status", "sitting", "application_note")
+            return ("name", "first_name", "is_sibling", "application_received", "obligatory_conference", "parent_dialog", "confirmation_status", "sitting", "remark")
         elif status == "intent_declared":
-            return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "is_sibling", "application_note")
+            return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "is_sibling", "remark")
         elif status == "waitlisted":
-            return ("name", "first_name", "waitlist_position", "application_note")
+            return ("name", "first_name", "waitlist_position", "remark")
         elif status == "alumnus":
-            return ("name", "first_name", "last_day", "application_note")
+            return ("name", "first_name", "last_day", "remark")
         elif status == "cancelled":
-            return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "application_note")
+            return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "remark")
         elif status == "special":
-            return ("name", "first_name", "first_day", "last_day", "application_note")
+            return ("name", "first_name", "first_day", "last_day", "remark")
 
-        return ("name", "first_name", "status", "application_note")
+        return ("name", "first_name", "status", "note")
 
     actions = ["email_list","change_status"];
 
@@ -107,15 +107,14 @@ class StudentAdmin(admin.ModelAdmin):
     def get_fieldsets(self, request, obj=None):
         fieldsets = (
                 (None, {
-                    "fields": ("short_name", "name", "first_name", "status", "dob", "pob", "address", "guardians_links")
+                    "fields": ("short_name", "name", "first_name", "status", "remark", "dob", "pob", "address", "guardians_links")
                 }),)
 
         if obj and (obj.status == "in_admission_procedure" or obj.status == "intent_declared" or obj.status == "cancelled"):
             fieldsets += ((_("Application"), {
                         "fields":(
-                        "application_note",
                         "application_received", "obligatory_conference", "parent_dialog", "confirmation_status", "sitting",
-                        "planned_enrollment_year", "planned_enrollment_age"
+                        "planned_enrollment_year", "planned_enrollment_age", "is_sibling"
                     )}),)
 
 
@@ -123,8 +122,7 @@ class StudentAdmin(admin.ModelAdmin):
             fieldsets += ((_("Waitlist"), {
                         "fields":(
                         "waitlist_position", 
-                        "application_note",
-                        "planned_enrollment_year", "planned_enrollment_age"
+                        "planned_enrollment_year", "planned_enrollment_age", "is_sibling"
                     )}),)
 
         fieldsets += (
@@ -142,7 +140,7 @@ class StudentAdmin(admin.ModelAdmin):
                     "gender", "language",
                     "citizenship", "denomination",
                     "after_school_care", "district_school",
-                    "privacy_policy_agreement", "vaccination_policy_agreement", "is_sibling"
+                    "privacy_policy_agreement", "vaccination_policy_agreement"
                 )}),
                 (_("Edit Guardians"), {
                     "classes":("collapse",),
@@ -238,8 +236,8 @@ class ContactAdmin(admin.ModelAdmin):
 
     def get_fields(self, request, obj=None):
         if obj.is_teammember:
-            return ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "is_teammember", "team_email_address", "student_links")
-        return ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "on_address_list", "is_teammember", "student_links")
+            return ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "is_teammember", "team_email_address", "note", "student_links")
+        return ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "on_address_list", "is_teammember", "note", "student_links")
 
     def student_links(self, obj):
         students = obj.students.all()
