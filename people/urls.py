@@ -7,10 +7,29 @@ from .models import *
 from rest_framework import routers, serializers, viewsets
 
 
+class StudentListSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Student
+        fields = (
+            'id', 'entry_nr', 'status',
+            'short_name', 'name', 'first_name'
+        )
+
+class StudentListViewSet(viewsets.ModelViewSet):
+    serializer_class = StudentListSerializer
+    def get_queryset(self):
+        queryset = Student.objects.all()
+        status = self.request.query_params.get("status", None)
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
+        return queryset.order_by('short_name')
+
+
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Student
-#        depth = 2
+        depth = 2
         fields = (
             'id', 'entry_nr', 'status',
             'short_name', 'name', 'first_name', 'dob', 'pob',
@@ -23,17 +42,15 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
             'guardians',
         )
 
-
 class StudentViewSet(viewsets.ModelViewSet):
     serializer_class = StudentSerializer
     def get_queryset(self):
         queryset = Student.objects.all()
-        status = self.request.query_params.get("id", None)
+        status = self.request.query_params.get("status", None)
         if status is not None:
             queryset = queryset.filter(status=status)
 
         return queryset.order_by('short_name')
-
 
 
 class AddressSerializer(serializers.HyperlinkedModelSerializer):
@@ -61,6 +78,7 @@ class ContactViewSet(viewsets.ModelViewSet):
 
 
 router = routers.DefaultRouter()
+router.register(r'students', StudentListViewSet, "student")
 router.register(r'student', StudentViewSet, "student")
 router.register(r'address', AddressViewSet, "address")
 router.register(r'contact', ContactViewSet, "contact")
