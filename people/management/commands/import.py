@@ -57,6 +57,9 @@ class Command(BaseCommand):
 				if (student.status == "waitlisted"):
 					student.waitlist_position = row["PlatzWarteliste"]
 
+				if (student.status == "alumnus"):
+					student.last_day = datetime.strptime(row["Abgangsdatum"], "%m/%d/%y")
+
 				if (student.status == "in_admission_procedure"):
 					student.application_received = row["Bewerbung da"]=="ja"
 					student.obligatory_conference = row["Obl. EA"]=="ja"
