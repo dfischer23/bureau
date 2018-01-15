@@ -10,10 +10,7 @@ echo -e "\nOk, resetting..."
 
 APP="people"
 DBNAME="db.sqlite3"
-MIGRATIONS="$APP/migrations/0*.py"
 
 rm $DBNAME
-rm $MIGRATIONS
-python manage.py makemigrations $APP
 python manage.py migrate
 python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'fischer@interaktiva.de', 's3cr3t')"
