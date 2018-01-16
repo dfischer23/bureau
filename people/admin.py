@@ -230,14 +230,17 @@ admin.site.register(Student, StudentAdmin)
 class ContactAdmin(admin.ModelAdmin):
     model = Contact
     list_display = ("name","first_name","kind","phone_number","cellphone_number","email_address")
-    search_fields = ["name"]
-    list_filter = ("kind",)
+    search_fields = ["name", "first_name"]
+    list_filter = ("kind","is_teammember")
     readonly_fields = ("student_links",)
 
     def get_fields(self, request, obj=None):
+#            return ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "on_address_list", "is_teammember", "team_email_address", "note", "student_links")
+        fields = ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "on_address_list", "is_teammember")
         if obj.is_teammember:
-            return ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "is_teammember", "team_email_address", "note", "student_links")
-        return ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "on_address_list", "is_teammember", "note", "student_links")
+            fields += ("team_email_address",)
+        fields += ("note", "student_links")
+        return fields
 
     def student_links(self, obj):
         students = obj.students.all()
