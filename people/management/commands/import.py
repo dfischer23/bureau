@@ -71,8 +71,8 @@ class Command(BaseCommand):
 					student.level_ofs = int(row["Klassenstufe 17/18"]);
 					student.first_enrollment = 2018 - int(row["Klassenstufe 17/18"]);
 
-				student.privacy_policy_agreement = (row["Datenschutzerklärung"] != "")
-				student.vaccination_policy_agreement = (row["Infektionsschutzgesetz"] != "");
+				student.privacy_policy_agreement = (row["Datenschutzerklärung"] == "X")
+				student.vaccination_policy_agreement = (row["Infektionsschutzgesetz"] == "X");
 
 				if row["Anmerkung"].find("eschwister") >= 0:
 					student.is_sibling = True

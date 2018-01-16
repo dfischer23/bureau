@@ -78,7 +78,7 @@ class StudentAdmin(admin.ModelAdmin):
         status = request.GET.get("status__exact", "active")
 
         if status == "active":
-            return ("name", "first_name", "calc_level")
+            return ("name", "first_name", "calc_level", "first_day")
         elif status == "in_admission_procedure":
             return ("name", "first_name", "is_sibling", "application_received", "obligatory_conference", "parent_dialog", "confirmation_status", "sitting", "remark")
         elif status == "intent_declared":
