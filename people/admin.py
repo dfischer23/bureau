@@ -92,7 +92,7 @@ class StudentAdmin(admin.ModelAdmin):
         elif status == "special":
             return ("name", "first_name", "first_day", "last_day", "remark")
 
-        return ("name", "first_name", "status", "remark")
+        return ("entry_nr", "name", "first_name", "status", "remark")
 
     actions = ["email_list","change_status"];
 
