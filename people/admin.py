@@ -237,7 +237,7 @@ class ContactAdmin(admin.ModelAdmin):
     def get_fields(self, request, obj=None):
 #            return ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "on_address_list", "is_teammember", "team_email_address", "note", "student_links")
         fields = ("name", "first_name", "kind", "address", "phone_number", "cellphone_number", "email_address", "on_address_list", "is_teammember")
-        if obj.is_teammember:
+        if obj and obj.is_teammember:
             fields += ("team_email_address",)
         fields += ("note", "student_links")
         return fields
