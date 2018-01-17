@@ -137,6 +137,7 @@ class StudentAdmin(admin.ModelAdmin):
                 (_("Formalities"), {
                     "classes":("collapse",),
                     "fields":(
+                    "entry_nr",
                     "gender", "language",
                     "citizenship", "denomination",
                     "after_school_care", "district_school",
