@@ -57,6 +57,29 @@ class StudentStatusFilter(DefaultListFilter):
     def default_value(self):
         return "active"
 
+class StudentPlannedEnrollmentFilter(DefaultListFilter):
+    title = _('Enrollment Year')
+    parameter_name = 'planned_enrollment_year'
+
+    def lookups(self, request, model_admin):
+        years = []
+        today = date.today();
+        current_year = today.year
+        for i in range(0,5):
+            y = "%i" % (current_year + i)
+            years.append((y, _(y)));
+        return years;
+
+    def queryset(self, request, queryset):
+        if self.value() and self.value() != "_all":
+            return queryset.filter(planned_enrollment_year__contains=self.value())
+
+        return queryset
+
+
+    def default_value(self):
+        return "_all"
+
 
 class NoteForm(forms.ModelForm):
     class Meta:
@@ -94,10 +117,17 @@ class StudentAdmin(admin.ModelAdmin):
 
         return ("entry_nr", "name", "first_name", "status", "remark")
 
+    def get_list_filter(self, request, obj=None): 
+        status = request.GET.get("status__exact", "active")
+
+        if status == "waitlisted" or status == "intent_declared" or status == "in_admission_procedure":
+            return (StudentStatusFilter,StudentPlannedEnrollmentFilter,)
+
+        return (StudentStatusFilter,)
+
     actions = ["email_list","change_status"];
 
-    search_fields = ["first_name", "name", "planned_enrollment_year"]
-    list_filter = (StudentStatusFilter,)
+    search_fields = ["entry_nr", "first_name", "name"]
     filter_horizontal = ("guardians",)
     readonly_fields = ("guardians_links","calc_level")
     inlines = [
@@ -110,7 +140,7 @@ class StudentAdmin(admin.ModelAdmin):
                     "fields": ("short_name", "name", "first_name", "status", "remark", "dob", "pob", "address", "guardians_links")
                 }),)
 
-        if obj and (obj.status == "in_admission_procedure" or obj.status == "intent_declared" or obj.status == "cancelled"):
+        if not obj or (obj and (obj.status == "in_admission_procedure" or obj.status == "intent_declared" or obj.status == "cancelled")):
             fieldsets += ((_("Application"), {
                         "fields":(
                         "application_received", "obligatory_conference", "parent_dialog", "confirmation_status", "sitting",
