@@ -140,7 +140,7 @@ def level_report(request):
 
 		# iterate a school year, produce a list of dates, one for each month
 		year = 2010
-		report_duration = 8
+		report_duration = 9
 		first_month_of_schoolyear = 6
 		dates = list(map(
 					lambda month: date(year + math.floor(month/12), (month%12)+1, 1), 
