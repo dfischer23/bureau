@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.core import urlresolvers
+from django import urls
 from django.utils.html import format_html
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
@@ -103,11 +103,11 @@ class StudentAdmin(admin.ModelAdmin):
         if status == "active":
             return ("name", "first_name", "calc_level", "first_day")
         elif status == "in_admission_procedure":
-            return ("name", "first_name", "is_sibling", "application_received", "obligatory_conference", "parent_dialog", "confirmation_status", "sitting", "remark")
+            return ("name", "first_name", "entry_nr", "get_gender_short", "is_sibling", "application_received", "obligatory_conference", "parent_dialog", "confirmation_status", "sitting", "remark")
         elif status == "intent_declared":
             return ("name", "first_name", "planned_enrollment_year", "planned_enrollment_age", "is_sibling", "remark")
         elif status == "waitlisted":
-            return ("name", "first_name", "waitlist_position", "remark")
+            return ("name", "first_name", "dob", "calc_level", "remark")
         elif status == "alumnus":
             return ("name", "first_name", "last_day", "remark")
         elif status == "cancelled":
@@ -181,14 +181,13 @@ class StudentAdmin(admin.ModelAdmin):
             )
 
         return fieldsets;
-    	
 
     def guardians_links(self, obj):
         guardians = obj.guardians.all()
 
         links = [];
         for guardian in guardians:
-        	change_url = urlresolvers.reverse("admin:people_contact_change", args=(guardian.id,))
+        	change_url = urls.reverse("admin:people_contact_change", args=(guardian.id,))
         	links.append('<a href="%s">%s</a>' % (change_url, guardian))
         return format_html("<br>".join(links));
     guardians_links.short_description = _("Guardians")
@@ -196,6 +195,10 @@ class StudentAdmin(admin.ModelAdmin):
     def get_full_name(self, obj):
         return obj.first_name + " " + obj.name;
     get_full_name.short_description = _("Name")
+
+    def get_gender_short(self, obj):
+        return obj.gender;
+    get_gender_short.short_description = _("Gender")
 
     def calc_level(self, obj):
     	if not obj.level_ref or not obj.level_ofs:
@@ -278,7 +281,7 @@ class ContactAdmin(admin.ModelAdmin):
 
         links = [];
         for student in students:
-            change_url = urlresolvers.reverse("admin:people_student_change", args=(student.id,))
+            change_url = urls.reverse("admin:people_student_change", args=(student.id,))
             links.append('<a href="%s">%s</a>' % (change_url, student))
         return format_html("<br>".join(links));
     student_links.short_description = _("Students")
@@ -299,7 +302,7 @@ class AddressAdmin(admin.ModelAdmin):
         students = obj.student_set.all()
         links = [];
         for student in students:
-            change_url = urlresolvers.reverse("admin:people_student_change", args=(student.id,))
+            change_url = urls.reverse("admin:people_student_change", args=(student.id,))
             links.append('<a href="%s">%s</a>' % (change_url, student))
         return format_html("<br>".join(links));
     student_links.short_description = _("Students at this Address")
@@ -308,7 +311,7 @@ class AddressAdmin(admin.ModelAdmin):
         contacts = obj.contact_set.all()
         links = [];
         for contact in contacts:
-            change_url = urlresolvers.reverse("admin:people_contact_change", args=(contact.id,))
+            change_url = urls.reverse("admin:people_contact_change", args=(contact.id,))
             links.append('<a href="%s">%s</a>' % (change_url, contact))
         return format_html("<br>".join(links));
     contact_links.short_description = _("Contacts at this Address")

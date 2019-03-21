@@ -20,7 +20,7 @@ class Address(models.Model):
     country = models.CharField(_("Country"), max_length=200, blank=True)
 
     def __str__(self):
-        return self.city + (", " + self.street) if self.street else "";
+        return self.postal_code + " " + self.city + (", " + self.street) if self.street else "";
 
 
 class Contact(models.Model):
@@ -85,12 +85,15 @@ class Student(models.Model):
         ("special", _("special")),
         )
 
-    entry_nr = models.IntegerField(_("Entry #"), blank=True, null=True)
+    def get_new_entry_nr():
+        return Student.objects.all().order_by("-entry_nr")[0].entry_nr+1;
+
+    entry_nr = models.IntegerField(_("Entry #"), blank=True, null=True, unique=True, default=get_new_entry_nr)
     status = models.CharField(_("Status"), max_length=32, blank=True, null=True, choices=STATUS_CHOICES)
 
-    short_name = models.CharField( _("Short Name"), max_length=100, blank=True, null=True)
     name = models.CharField(_("Last Name"), max_length=200)
     first_name = models.CharField(_("First Name"), max_length=200)
+    short_name = models.CharField( _("Short Name"), max_length=100, blank=True)
 
     remark = models.CharField(_("Remark"), max_length=500, blank=True, null=True)
 

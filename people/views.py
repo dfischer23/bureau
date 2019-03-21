@@ -45,7 +45,7 @@ def list_excel(request):
 			# actually print the first guardians's students
 			for child in guardians[0].students.all().filter(status="active"):
 				sheet.write(row, 0, child.name)
-				sheet.write(row, 1, child.first_name)
+				sheet.write(row, 1, child.short_name if child.short_name else child.first_name )
 				sheet.write_datetime(row, 2, child.dob)
 				sheet.set_row(row, 10, format_bold_gray if gray else format_bold)
 				printed.append(child.id)
