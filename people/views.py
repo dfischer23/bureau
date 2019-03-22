@@ -2,7 +2,7 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 
 from .models import Student, Contact
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 import csv
 from django.http import HttpResponse
@@ -14,6 +14,12 @@ from xlsxwriter.workbook import Workbook
 def index(request):
     return render(request, 'students.html', 
         {'students': Student.objects.all() })
+
+@login_required
+def studentcoversheet(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    return render(request, 'studentcoversheet.html', 
+        {'student': student })
 
 @login_required
 def list_excel(request):

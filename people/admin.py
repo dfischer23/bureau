@@ -129,7 +129,7 @@ class StudentAdmin(admin.ModelAdmin):
 
     search_fields = ["entry_nr", "first_name", "name"]
     filter_horizontal = ("guardians",)
-    readonly_fields = ("guardians_links","calc_level")
+    readonly_fields = ("guardians_links","calc_level","cover_sheet_link")
     inlines = [
        NoteInline,
     ]
@@ -177,10 +177,18 @@ class StudentAdmin(admin.ModelAdmin):
                     "classes":("collapse",),
                     "fields": (
                     "guardians",
-                )})
+                )}),
+                (None, {
+                        "fields":("cover_sheet_link",)
+                    }),
             )
 
         return fieldsets;
+
+    def cover_sheet_link(self, obj):
+        return format_html('<a class="button" href="/people/studentcoversheet/%s">%s</a>' % (obj.id, _("Print")));
+    cover_sheet_link.short_description = _("Cover Sheet")
+    cover_sheet_link.allow_tags = True
 
     def guardians_links(self, obj):
         guardians = obj.guardians.all()

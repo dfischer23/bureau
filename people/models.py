@@ -95,12 +95,19 @@ class Student(models.Model):
     first_name = models.CharField(_("First Name"), max_length=200)
     short_name = models.CharField( _("Short Name"), max_length=100, blank=True)
 
+    def short_or_first_name(self):
+        return self.short_name or self.first_name
+
     remark = models.CharField(_("Remark"), max_length=500, blank=True, null=True)
 
     dob = models.DateField(_("Date of Birth"), blank=True, null=True)
     pob = models.CharField(_("Place of Birth"), max_length=200, blank=True, null=True)
 
     gender = models.CharField(_("Gender"), max_length=2, blank=True, null=True, choices=GENDER_CHOICES)
+
+    def gender_verbose(self):
+        return dict(self.GENDER_CHOICES)[self.gender]
+
     denomination = models.CharField(_("Religious Denomination"), max_length=200, blank=True, null=True)
     citizenship = models.CharField(_("Citizenship"), max_length=200, blank=True, null=True)
     language = models.CharField(_("Household Language"), max_length=200, blank=True, default="Deutsch")
