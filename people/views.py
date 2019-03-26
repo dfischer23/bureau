@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 
-from .models import Student, Contact
+from .models import Student, Contact, LicenseGroup, License, LicenseGiven
 from django.shortcuts import render, get_object_or_404
 
 import csv
@@ -20,6 +20,56 @@ def studentcoversheet(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     return render(request, 'studentcoversheet.html', 
         {'student': student })
+
+@login_required
+def licenses(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+
+    if request.method == 'POST':
+    	for key in request.POST:
+    		t = key.split("_")
+    		if t[0]=="lic":
+	    		license = License.objects.get(id=t[1])
+	    		given_new = request.POST[key] == "1"
+	    		comment_new = request.POST["comment_"+t[1]]
+
+	    		given = student.licensegiven_set.filter(license=license)
+	    		given_old = False
+	    		comment_old = ""
+	    		if (given.count()>0):
+	    			given_old = True
+	    			comment_old = given[0].comment or ""
+
+	    		if (given_new != given_old):
+		    		print (license.group.name+" / "+license.name)
+		    		if given_old:
+		    			#print("Revoke license "+license.name)
+		    			given[0].delete()
+		    		else:
+						#print("Given license "+license.name+" "+comment_new)
+		    			g = LicenseGiven.objects.create(license=license, student=student, comment=comment_new)
+
+	    		elif (given_new and comment_new != comment_old):
+	    			#print("Update Comment for license")
+	    			g = given[0]
+	    			g.comment = comment_new
+	    			g.save()
+	    			
+
+    	# for group in LicenseGroup.objects.all():
+    	# 	print (group.name)
+
+	    # 	for license in group.license_set.all():
+	    # 		val = request.POST["lic_%i" % license.id] == "1";
+	    # 		comment_id = "comment_%i" % license.id;
+	    # 		comment = "";
+	    # 		if comment_id in request.POST:
+		   #  		comment = request.POST[comment_id]
+	    # 		print ('   '+license.name+" - "+('True' if val else 'False' )+" : "+comment )
+
+    return render(request, 'licenses.html', 
+        {'student': student,
+         'licenseGroups': LicenseGroup.objects.all() })
 
 @login_required
 def list_excel(request):

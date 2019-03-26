@@ -63,6 +63,30 @@ class Contact(models.Model):
 # Zusatz,Frei 1,
 
 
+class LicenseGroup(models.Model):
+    class Meta:
+        verbose_name = _("License Group")
+        verbose_name_plural = _("License Groups")
+
+    name = models.CharField(_("Name"), max_length=64, blank=False, null=False, unique=True)
+    description = models.TextField(_("Description"))
+
+    def __str__(self):
+        return self.name
+
+class License(models.Model):
+    class Meta:
+        verbose_name = _("License")
+        verbose_name_plural = _("Licenses")
+
+    name = models.CharField(_("Name"), max_length=64, blank=False, null=False, unique=True)
+    description = models.TextField(_("Description"))
+    group = models.ForeignKey(LicenseGroup, verbose_name=_("Group"), null=False, blank=False, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.group.name + " / " + self.name
+
+
 class Student(models.Model):
     class Meta:
         verbose_name = _("Student")
@@ -140,6 +164,8 @@ class Student(models.Model):
     confirmation_status = models.CharField(_("Confirmation"), max_length=32, blank=True, null=True)
     sitting = models.CharField(_("Sitting In"), max_length=32, blank=True, null=True)
 
+    licenses = models.ManyToManyField(License, through="LicenseGiven")
+
     def __str__(self):
         return self.name + ", " + self.first_name
 
@@ -154,3 +180,19 @@ class Note(models.Model):
     archived = models.BooleanField(_("Archived"), blank=True, default=False)
     student = models.ForeignKey(Student, verbose_name=_("Student"), null=True, blank=True, on_delete=models.CASCADE)
 #    user = ForeignKey
+
+
+class LicenseGiven(models.Model):
+    class Meta:
+        verbose_name = _("License Given")
+        verbose_name_plural = _("Licenses Given")
+
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    license = models.ForeignKey(License, on_delete=models.CASCADE)
+
+    comment = models.CharField(_("Comment"), max_length=255, blank=True, null=True)
+
+    # potentially document scan reference?
+
+    def __str__(self):
+        return self.license.name

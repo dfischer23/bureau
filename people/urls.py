@@ -88,6 +88,7 @@ urlpatterns = [
     url(r'^adressliste$', views.list_excel, name='adressliste'),
 #    url(r'^students$', views.students_csv, name='students'),
     url(r'^studentcoversheet/(?P<student_id>\w+)/$', views.studentcoversheet, name='studentcoversheet'),
+    url(r'^licenses/(?P<student_id>\w+)/$', views.licenses, name='licenses'),
 	url(r'^students_csv/(?P<status>\w+)/$', views.students_csv),
     url(r'^level_report/$', views.level_report),
     url(r'^', include(router.urls)),

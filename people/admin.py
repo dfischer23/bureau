@@ -92,7 +92,6 @@ class NoteInline(admin.TabularInline):
     fields = ("content",)
 
 
-
 class StudentAdmin(admin.ModelAdmin):
 
 
@@ -129,7 +128,7 @@ class StudentAdmin(admin.ModelAdmin):
 
     search_fields = ["entry_nr", "first_name", "name"]
     filter_horizontal = ("guardians",)
-    readonly_fields = ("guardians_links","calc_level","cover_sheet_link")
+    readonly_fields = ("guardians_links","calc_level","cover_sheet_link","licenses_link")
     inlines = [
        NoteInline,
     ]
@@ -179,7 +178,7 @@ class StudentAdmin(admin.ModelAdmin):
                     "guardians",
                 )}),
                 (None, {
-                        "fields":("cover_sheet_link",)
+                        "fields":("cover_sheet_link","licenses_link")
                     }),
             )
 
@@ -189,6 +188,11 @@ class StudentAdmin(admin.ModelAdmin):
         return format_html('<a class="button" href="/people/studentcoversheet/%s">%s</a>' % (obj.id, _("Print")));
     cover_sheet_link.short_description = _("Cover Sheet")
     cover_sheet_link.allow_tags = True
+
+    def licenses_link(self, obj):
+        return format_html('<a class="button" href="/people/licenses/%s" target="_blank">%s</a>' % (obj.id, _("Bearbeiten")));
+    licenses_link.short_description = _("License List")
+    licenses_link.allow_tags = True
 
     def guardians_links(self, obj):
         guardians = obj.guardians.all()
@@ -325,5 +329,28 @@ class AddressAdmin(admin.ModelAdmin):
     contact_links.short_description = _("Contacts at this Address")
 
 
-
 admin.site.register(Address, AddressAdmin)
+
+class LicenseForm(forms.ModelForm):
+    class Meta:
+        widgets = {"description": forms.Textarea(attrs={"rows": 2, "cols":50 })}
+
+class LicenseInline(admin.TabularInline):
+    extra = 0
+    model = License
+    form = LicenseForm
+    fields = ("name","description",)
+
+class LicenseGroupAdmin(admin.ModelAdmin):
+    model = LicenseGroup
+    inlines = [
+       LicenseInline,
+    ]
+
+admin.site.register(LicenseGroup, LicenseGroupAdmin)
+
+
+#class LicenseAdmin(admin.ModelAdmin):
+#    model = License
+
+#admin.site.register(License, LicenseAdmin)
