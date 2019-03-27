@@ -1,0 +1,140 @@
+{# people/templates/students.html #}
+{% load staticfiles %}
+{% load i18n %}
+{% load license_functions %}
+<!doctype html>
+<html>
+    <head>
+        <title>Dürfliste {{ student.short_or_first_name }} {{ student.name }}</title>
+        <link rel="stylesheet" href="{% static 'admin/css/base.css' %}" /> 
+
+        <style type="text/css" >
+            @page 
+            {
+                size: auto;
+                margin: 0mm;
+            }
+
+            body {
+                margin-top: 10em;
+                margin-left: 10em;
+            }
+
+            #logo {
+                position: absolute;
+                top: 5em;
+                right: 10em;
+            }
+
+            h1 {
+                font-size: 20pt;
+                margin-bottom: 2em;
+            }
+
+            table {
+                width: calc( 100% - 10em );
+                margin-bottom: 2em;
+            }
+
+            td {
+                padding-left: 0;
+                padding: 0.7em;
+                font-size: 11pt;
+                border-bottom: .2pt solid black;
+                border-top: .2pt solid black;
+                line-height: 120%;
+            }
+
+            td.label {
+                font-size: 9pt;
+            }
+
+            ul li {
+                list-style: none;
+            }
+
+            ul li.yes:before {
+                content: '☑'
+            }
+            ul li.no:before {
+                content: '☐'
+            }
+
+            .comment {
+                padding-left: 20px;
+            }
+
+            button {
+                margin: 10px;
+                padding: 10px;
+                text-transform: uppercase;
+            }
+        </style>
+
+        <script>
+            function toggle(id) {
+                var el = document.getElementById(id);
+                if (el.type == "checkbox") {
+                    el.checked = !el.checked;
+                }
+            }
+        </script>
+
+    </head>
+    <body>
+        <h1>Dürfliste <br/>
+            <b>{{ student.short_or_first_name }} {{ student.name }}</b> 
+        </h1>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <button type="submit">Sichern</button>
+
+            <table>
+
+        {% for group in licenseGroups.all %}
+            <tr><td colspan="3">
+                <h2>{{ group.name }}</h2>
+
+                {{ group.description }}
+            </td></tr>
+
+
+            {% for license in group.license_set.all %}
+
+            <tr>
+                <td>
+                    <input type="hidden" name="lic_{{license.id}}" value="0">
+                    <input type="checkbox" id="lic_{{license.id}}" name="lic_{{license.id}}" value="1" 
+                        {% if student|has_license:license %}checked{% endif %}>
+                </td>
+                <td onclick="toggle('lic_{{license.id}}'); return false">
+                    {{ license.description }}
+                </td>
+                <td>
+                    <input type="text" size="32" name="comment_{{license.id}}" value="{{ student|license_comment:license }}">
+                </td>
+            </tr>
+                <!--
+                {% if student|has_license:license %}
+                    <li class="yes">
+                        {{ license.description }}
+                        <b class="comment">{{ student|license_comment:license|prefix:'<br>'|safe }}</b>
+                    </li>
+                {% else %}
+                    <li class="no">
+                        {{ license.description }}<br/ >
+                    </li>
+                {% endif %}
+            -->
+
+                {% endfor %}
+            {% endfor %}
+
+            </table>
+
+        </form>
+
+    </body>
+</html>
