@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  app:
+    environment:
+      DJANGO_MANAGEPY_MIGRATE: "on"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:8000"
