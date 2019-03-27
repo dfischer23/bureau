@@ -42,3 +42,4 @@ kleinundalleszusammen
 
 elternpostliste: (gefiltert) schüler, jeder erziehungsberechtigter, dann nach postadresse kombinieren ("Daniel und Sylvia Fischer") -> ist das wirklich notwendig?
 mailliste: einfach alle erziehungsberechtigten aller (gefiltert) schüler
+pip install django-multiselectfield

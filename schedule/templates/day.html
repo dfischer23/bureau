@@ -1,0 +1,199 @@
+{# people/templates/students.html #}
+{% load staticfiles %}
+{% load i18n %}
+{% load schedule_functions %}
+<!doctype html>
+<html>
+    <head>
+        <title>Tagesplan {{ date }}</title>
+        <link rel="stylesheet" href="{% static 'admin/css/base.css' %}" /> 
+
+        <style type="text/css" >
+            @page 
+            {
+                size: auto;
+                margin: 0mm;
+            }
+
+            @media print {
+                * {
+                    --foreground-color: black;
+                    --background-color: white;
+                    --green: #73d216;
+                    --red: #ef2929;
+                }
+
+                #time {
+                    display: none;
+                }
+            }
+
+            @media screen {
+                * {
+                    --foreground-color: white;
+                    --background-color: black;
+                    --green: #4e9a06;
+                    --red: #cc0000;
+                }
+            }
+
+            body {
+                background-color: var(--background-color);
+                color: var(--foreground-color);
+                margin-top: 6em;
+                margin-left: 6em;
+                margin-right: 6em;
+            }
+
+            #logo {
+                position: absolute;
+                top: 5em;
+                right: 10em;
+            }
+
+            h1 {
+                color: var(--foreground-color);
+                font-size: 20pt;
+                margin-bottom: 3em;
+            }
+
+            table {
+                width: calc( 100% );
+                margin-bottom: 2em;
+            }
+
+            td {
+                padding-left: 0;
+                padding: 0.7em;
+                font-size: 11pt;
+                line-height: 120%;
+                border-bottom: .2pt solid var(--foreground-color);
+                border-top: .2pt solid var(--foreground-color);
+            }
+
+            td.label {
+                font-size: 9pt;
+            }
+
+            .title {
+                font-weight: bold;
+            }
+
+            .exception {
+                background-color: var(--red);
+                font-weight: bold;
+            }
+
+            .past {
+                opacity: 0.4;
+            }
+
+            .present {
+                background-color: var(--green);
+            }
+
+            .future {
+            }
+
+            button {
+                margin: 10px;
+                padding: 10px;
+                text-transform: uppercase;
+            }
+
+            #time {
+                float: right;
+                font-size: 46pt;
+            }
+
+
+            textarea {
+                font-size: 11pt;
+
+                width: 100%;
+                height: 20em;
+                padding: 0;
+                margin-top: 1em;
+                background-color: var(--background-color);
+                color: var(--foreground-color);
+
+                border-style: none;
+                border-radius: 0;
+            }
+
+
+        </style>
+
+    </head>
+    <body>
+        <div id="time"></div> 
+        <h1>
+            <b>{{ weekday }}</b>, {{ date_de }} 
+        </h1>
+
+        <table id="events" style="visibility:hidden;">
+            {% for event in events %}
+
+                <tr class="event" start="{{event.start}}" end="{{event.end}}">
+                    <td class="time">
+                        {{ event.start }} - {{ event.end }}
+                    </td> 
+                    <td class="title">
+                        {{ event.title }}
+                    </td>
+                    <td>
+                        {% if event.teammember %}
+                            mit {{ event.teammember.first_name }}
+                        {% endif %}
+                    </td>
+                        {% if event|exception_if_valid:date %}
+                            <td class="exception">
+                                <span >{{ event|exception_if_valid:date }}</span>
+                            </td>
+                        {% else %}
+                            <td>
+                                {% if event.room %}
+                                    im {{ event.room.name }}
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
+            <textarea></textarea>
+
+        <script>
+            function update() {
+                var d = new Date();
+                var now = d.getHours()*100 + d.getMinutes();
+
+
+                document.querySelector("#time").innerHTML = d.getHours() + ":" + (""+d.getMinutes()).padStart(2,"0");
+
+                var rows = document.getElementsByClassName("event");
+                for (var row of rows) {
+                    var start = parseInt(row.getAttribute("start").split(":").join(""));
+                    var end = parseInt(row.getAttribute("end").split(":").join(""));
+
+                    var tense = undefined;
+                    if(now < start) tense = "future";
+                    else if (now > end) tense = "past";
+                    else tense = "present";
+
+                    row.className = "event "+tense;
+                }
+
+                document.querySelector("#events").style.visibility = "visible";
+            }
+
+            setTimeout(function() { location.reload(); }, 20000);
+
+            setInterval(update, 1000);
+            update();
+            
+        </script>
+    </body>
+</html>

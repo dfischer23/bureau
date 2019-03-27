@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-22 15:43+0000\n"
+"POT-Creation-Date: 2019-03-27 14:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -682,22 +682,27 @@ msgid "noon"
 msgstr "Mittags"
 
 #: env/lib/python3.7/site-packages/django/utils/dates.py:6
+#: schedule/models.py:38
 msgid "Monday"
 msgstr "Montag"
 
 #: env/lib/python3.7/site-packages/django/utils/dates.py:6
+#: schedule/models.py:39
 msgid "Tuesday"
 msgstr "Dienstag"
 
 #: env/lib/python3.7/site-packages/django/utils/dates.py:6
+#: schedule/models.py:40
 msgid "Wednesday"
 msgstr "Mittwoch"
 
 #: env/lib/python3.7/site-packages/django/utils/dates.py:6
+#: schedule/models.py:41
 msgid "Thursday"
 msgstr "Donnerstag"
 
 #: env/lib/python3.7/site-packages/django/utils/dates.py:6
+#: schedule/models.py:42
 msgid "Friday"
 msgstr "Freitag"
 
@@ -1234,7 +1239,7 @@ msgstr "Datenblatt"
 msgid "Guardians"
 msgstr "Erziehungsberechtigte"
 
-#: people/admin.py:205 people/models.py:39
+#: people/admin.py:205 people/models.py:39 schedule/models.py:17
 msgid "Name"
 msgstr "Name"
 
@@ -1347,7 +1352,7 @@ msgstr "EMail"
 msgid "Appears on Adress List"
 msgstr "In der Adressliste anzeigen"
 
-#: people/models.py:50
+#: people/models.py:50 schedule/models.py:33
 msgid "Team Member"
 msgstr "Teammitglied"
 
@@ -1440,10 +1445,8 @@ msgstr "Staatsbürgerschaft"
 msgid "Household Language"
 msgstr "Sprache im Elternhaus"
 
-#: people/models.py:115
-#, fuzzy
-#| msgid "First day at this School"
-msgid "Fist day at this School"
+#: people/models.py:115 people/templates/studentcoversheet.html:166
+msgid "First day at this School"
 msgstr "Erster Tag an dieser Schule"
 
 #: people/models.py:116 people/templates/studentcoversheet.html:174
@@ -1558,6 +1561,51 @@ msgstr "Neuer Status wird bei folgenden SchülerInnen gesetzt:"
 msgid "Current Status"
 msgstr "Derzeitiger Status"
 
-#: people/templates/studentcoversheet.html:166
-msgid "First day at this School"
-msgstr "Erster Tag an dieser Schule"
+#: schedule/admin.py:24
+msgid "Weekday"
+msgstr "Wochentag"
+
+#: schedule/models.py:14 schedule/models.py:35
+msgid "Room"
+msgstr "Raum"
+
+#: schedule/models.py:15
+msgid "Rooms"
+msgstr "Räume"
+
+#: schedule/models.py:25
+msgid "Event"
+msgstr "Veranstaltung"
+
+#: schedule/models.py:26
+msgid "Events"
+msgstr "Veranstaltungen"
+
+#: schedule/models.py:29
+msgid "Title"
+msgstr "Titel"
+
+#: schedule/models.py:30
+msgid "Start Time"
+msgstr "Beginn"
+
+#: schedule/models.py:31
+msgid "End Time"
+msgstr "Ende"
+
+#: schedule/models.py:44
+msgid "Weekdays"
+msgstr "Wochentage"
+
+#: schedule/models.py:46
+msgid "Exception until"
+msgstr "Ausnahme bis"
+
+#: schedule/models.py:47
+msgid "Exception"
+msgstr "Ausnahme"
+
+#, fuzzy
+#~| msgid "First day at this School"
+#~ msgid "Fist day at this School"
+#~ msgstr "Erster Tag an dieser Schule"

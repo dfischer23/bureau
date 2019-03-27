@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ["10.23.0.11","localhost","lab.interaktiva.de","d","infinita","b
 
 INSTALLED_APPS = [
     'people.apps.PeopleConfig',
+    'schedule.apps.ScheduleConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'multiselectfield'
 ]
 
 MIDDLEWARE = [
@@ -109,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'de'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Amsterdam'
 
 USE_I18N = True
 
