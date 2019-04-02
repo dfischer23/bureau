@@ -1,5 +1,12 @@
 FROM python:3.5-alpine
 
+# this file originally from: https://www.caktusgroup.com/blog/2017/03/14/production-ready-dockerfile-your-python-django-app/
+# docker build -t bureau .
+# docker run -p 8001:8000 -v /tmp/data:/data --name bureau1 -t bureau 
+# docker stop bureau1 && docker rm bureau1
+# docker exec -t -i bureau1 /bin/sh
+# docker image save -o bureau-$(date --iso).docker bureau
+
 # Copy in your requirements file
 ADD requirements.txt /requirements.txt
 
@@ -34,6 +41,7 @@ RUN set -ex \
 RUN mkdir /code/
 WORKDIR /code/
 ADD . /code/
+COPY ./docker-settings.py /code/bureau/settings.py
 
 # uWSGI will listen on this port
 EXPOSE 8000
@@ -42,7 +50,8 @@ EXPOSE 8000
 #ENV DJANGO_SETTINGS_MODULE=my_project.settings.deploy
 
 # uWSGI configuration (customize as needed):
-ENV UWSGI_VIRTUALENV=/venv UWSGI_WSGI_FILE=bureau/wsgi.py UWSGI_HTTP=:8000 UWSGI_MASTER=1 UWSGI_WORKERS=2 UWSGI_THREADS=8 UWSGI_UID=1000 UWSGI_GID=2000 UWSGI_LAZY_APPS=1 UWSGI_WSGI_ENV_BEHAVIOR=holy
+ENV UWSGI_VIRTUALENV=/venv UWSGI_WSGI_FILE=bureau/wsgi.py UWSGI_HTTP=:8000 UWSGI_MASTER=1 UWSGI_WORKERS=2 UWSGI_THREADS=8  UWSGI_LAZY_APPS=1 UWSGI_WSGI_ENV_BEHAVIOR=holy
+#UWSGI_UID=1000 UWSGI_GID=2000
 
 # Call collectstatic (customize the following line with the minimal environment variables needed for manage.py to run):
 RUN DATABASE_URL=none /venv/bin/python manage.py collectstatic --noinput
