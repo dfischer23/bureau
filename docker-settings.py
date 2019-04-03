@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ["10.23.0.11","localhost","lab.interaktiva.de","d","infinita","b
 
 INSTALLED_APPS = [
     'people.apps.PeopleConfig',
+    'schedule.apps.ScheduleConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

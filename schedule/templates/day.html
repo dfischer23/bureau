@@ -180,7 +180,7 @@
 
                     var tense = undefined;
                     if(now < start) tense = "future";
-                    else if (now > end) tense = "past";
+                    else if (now >= end) tense = "past";
                     else tense = "present";
 
                     row.className = "event "+tense;
