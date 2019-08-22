@@ -145,8 +145,8 @@ def level_report(request):
 		groups = [ range(1,5), range(5,10) ]
 
 		# iterate a school year, produce a list of dates, one for each month
-		year = 2010
-		report_duration = 9
+		year = 2013
+		report_duration = 25
 		first_month_of_schoolyear = 6
 		dates = list(map(
 					lambda month: date(year + math.floor(month/12), (month%12)+1, 1), 
