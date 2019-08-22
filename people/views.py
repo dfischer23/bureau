@@ -145,31 +145,31 @@ def list_excel(request):
 
 @login_required
 def students_csv(request, status="active"):
-		response = HttpResponse(content_type="text/csv")
-		response["Content-Disposition"] = "attachment;filename=list.csv"
+	response = HttpResponse(content_type="text/csv")
+	response["Content-Disposition"] = "attachment;filename=list.csv"
 
-		writer = csv.writer(response)
+	writer = csv.writer(response)
 
-		writer.writerow(["SchülerInnen mit Status '"+status+"'", "Stand:", "---"]);
-		writer.writerow(["Name", "Vorname", "Geburtsdatum", "Strasse", "Ort", "Erziehungsberechtigte"])
+	writer.writerow(["SchülerInnen mit Status '"+status+"'", "Stand:", "---"]);
+	writer.writerow(["Name", "Vorname", "Geburtsdatum", "Strasse", "Ort", "Erziehungsberechtigte"])
 
-		for student in Student.objects.all().filter(status=status):
-			guardian_names = [];
-			first_guardian_name = ""
-			for guardian in student.guardians.all():
-				if first_guardian_name == guardian.name:
-					guardian_names.append(guardian.first_name);
-				else:
-					first_guardian_name = guardian.name;
-					guardian_names.append(guardian.first_name + " " + guardian.name);
+	for student in Student.objects.all().filter(status=status):
+		guardian_names = [];
+		first_guardian_name = ""
+		for guardian in student.guardians.all():
+			if first_guardian_name == guardian.name:
+				guardian_names.append(guardian.first_name);
+			else:
+				first_guardian_name = guardian.name;
+				guardian_names.append(guardian.first_name + " " + guardian.name);
 
-			guardian_names.reverse()
+		guardian_names.reverse()
 
-			writer.writerow([student.name, student.first_name, student.dob.strftime("%d.%m.%Y"), 
-				student.address.street, student.address.postal_code+" "+student.address.city,
-				" und ".join(guardian_names)])
+		writer.writerow([student.name, student.first_name, student.dob.strftime("%d.%m.%Y"), 
+			student.address.street, student.address.postal_code+" "+student.address.city,
+			" und ".join(guardian_names)])
 
-		return response;
+	return response;
 
 
 
@@ -286,3 +286,151 @@ def level_report(request):
 
 		return response;
 
+
+@login_required
+def student_report(request):
+	today = date.today();
+	year = today.year
+
+	if today.month <= 1:
+		period_start = date(year-1, 7, 31)
+	elif today.month < 8:
+		period_start = date(year, 1, 31) 
+	else:
+		period_start = date(year, 7, 31)
+
+	period_end = today;
+
+	students_that_left = []
+	students_that_came = []
+	students  = []
+
+	for student in Student.objects.all().filter(Q(status="active") | Q(status="alumnus")):
+		came = False
+		left = False
+		alumnus = False
+
+		if student.first_day:
+			came = student.first_day >= period_start and student.first_day <= period_end
+
+		if student.last_day:
+			left = student.last_day >= period_start and student.last_day <= period_end
+			alumnus = student.last_day < period_start
+
+
+		# calculate the students class level at that date
+		student.tmp_level = calc_level(student, period_end)
+
+		if left:
+			students_that_left.append(student)
+		elif came:
+			students_that_came.append(student)
+		elif not alumnus:
+			students.append(student)
+
+#				response.write("\t%s %r %r\n" % ("✓" if enrolled else "✗", level, student) );
+
+
+	output = BytesIO()
+	book = Workbook(output)
+	sheet = book.add_worksheet("SchülerInnen")
+
+	format_normal = book.add_format({"font_size": 10, "bold": False, "num_format": "dd.mm.yyyy"})
+	format_bold = book.add_format({"font_size": 10, "bold": True, "num_format": "dd.mm.yyyy"})
+
+	row = 0
+
+	sheet.set_column(0,0,10)
+	sheet.set_column(1,1,20)
+	sheet.set_column(2,5,15)
+	sheet.set_column(5,7,30)
+	sheet.set_column(8,8,5)
+	sheet.set_column(9,12,15)
+
+	sheet.write(row, 0, "Stand")
+	sheet.write(row, 2, period_end)
+	sheet.set_row(row, 12, format_normal)
+	row += 1
+	sheet.write(row, 0, "Zu-/Abgänge berücksichtigt ab")
+	sheet.write(row, 2, period_start)
+	sheet.set_row(row, 12, format_normal)
+	row += 1
+	row += 1
+
+	sheet.write(row, 0, "Name")
+	sheet.write(row, 1, "Vorname")
+	sheet.write(row, 2, "Geburtsdatum")
+	sheet.write(row, 3, "Geburtsort")
+	sheet.write(row, 4, "Strasse")
+	sheet.write(row, 5, "Ort")
+	sheet.write(row, 6, "Erziehungsberechtigte")
+	sheet.write(row, 7, "Anschrift Erziehungsberechtigte (falls abweichend)")
+	sheet.write(row, 8, "Klassenstufe")
+	sheet.write(row, 9, "Tag des Eintritts")
+	sheet.write(row, 10, "Tag der Entlassung")
+	sheet.set_row(row, 12, format_bold)
+	row += 1
+
+	for student in sorted(students, key=lambda student: student.tmp_level):
+		student_report_row(sheet, student, row)
+		sheet.set_row(row, 12, format_normal)
+		row += 1
+
+	row += 1
+	sheet.write(row, 0, "Zugegangen")
+	sheet.set_row(row, 12, format_bold)
+	row += 1
+
+	for student in sorted(students_that_came, key=lambda student: student.tmp_level):
+		student_report_row(sheet, student, row)
+		sheet.set_row(row, 12, format_normal)
+		row += 1
+
+	row += 1
+	sheet.write(row, 0, "Abgegangen")
+	sheet.set_row(row, 12, format_bold)
+	row += 1
+
+	for student in sorted(students_that_left, key=lambda student: student.tmp_level):
+		student_report_row(sheet, student, row)
+		sheet.set_row(row, 12, format_normal)
+		row += 1
+
+	book.close()
+
+	output.seek(0)
+
+	response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	response['Content-Disposition'] = "attachment; filename=zugaenge_abgaenge.xlsx"
+
+	return response;	
+
+
+def student_report_row(sheet, student, row):
+	guardian_names = [];
+	first_guardian_name = ""
+	other_address = ""
+	for guardian in student.guardians.all():
+		if first_guardian_name == guardian.name:
+			guardian_names.append(guardian.first_name);
+		else:
+			first_guardian_name = guardian.name;
+			guardian_names.append(guardian.first_name + " " + guardian.name);
+
+		if guardian.address != student.address:
+			other_address = "%s %s, %s, %s %s  " % (guardian.first_name, guardian.name, 
+				guardian.address.street, guardian.address.postal_code, guardian.address.city)
+
+	guardian_names.reverse()
+
+	sheet.write(row, 0, student.name)
+	sheet.write(row, 1, student.first_name)
+	sheet.write(row, 2, student.dob)
+	sheet.write(row, 3, student.pob)
+	sheet.write(row, 4, student.address.street)
+	sheet.write(row, 5, student.address.postal_code+" "+student.address.city)
+	sheet.write(row, 6, " und ".join(guardian_names))
+	sheet.write(row, 7, other_address)
+	sheet.write(row, 8, "%r" % student.tmp_level)
+	sheet.write(row, 9, student.first_day)
+	sheet.write(row, 10, student.last_day)

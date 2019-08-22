@@ -136,7 +136,7 @@ class Student(models.Model):
     citizenship = models.CharField(_("Citizenship"), max_length=200, blank=True, null=True)
     language = models.CharField(_("Household Language"), max_length=200, blank=True, default="Deutsch")
 
-    first_day = models.DateField(_("Fist day at this School"), blank=True, null=True)
+    first_day = models.DateField(_("First day at this School"), blank=True, null=True)
     last_day = models.DateField(_("Last day at this School"), blank=True, null=True)
 
     first_enrollment = models.IntegerField(_("First Enrollment (at any School)"), blank=True, null=True)
