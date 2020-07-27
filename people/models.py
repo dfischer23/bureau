@@ -49,7 +49,7 @@ class Contact(models.Model):
 
     is_teammember = models.BooleanField(_("Team Member"), default=False)
     is_societymember = models.BooleanField(_("Society Member"), default=False)
-    team_email_address = models.CharField(_("Infinita-EMail"), max_length=128, blank=True)
+    team_email_address = models.CharField(_("Team-EMail"), max_length=128, blank=True)
 
     note = models.TextField(_("Note"), blank=True)
 

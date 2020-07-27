@@ -51,7 +51,7 @@
 
     </head>
     <body>
-        <img id="logo" src="{% static 'infinita.png' %}" width="200px" alt="Infinita" />
+        <img id="logo" src="{{ SCHOOL_LOGO }}" width="300px" alt="Infinita" />
 
         <h1>Schülerakte <br/>
             <b>{{ student.short_or_first_name }} {{ student.name }}</b>
@@ -180,7 +180,7 @@
         </table>
 
         <script>
-            window.onload = function() { window.print(); }
+       //     window.onload = function() { window.print(); }
         </script>
     </body>
 </html>
