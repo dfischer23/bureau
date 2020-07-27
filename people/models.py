@@ -48,6 +48,7 @@ class Contact(models.Model):
     on_address_list = models.BooleanField(_("Appears on Adress List"), default=True)
 
     is_teammember = models.BooleanField(_("Team Member"), default=False)
+    is_societymember = models.BooleanField(_("Society Member"), default=False)
     team_email_address = models.CharField(_("Infinita-EMail"), max_length=128, blank=True)
 
     note = models.TextField(_("Note"), blank=True)
@@ -86,7 +87,10 @@ class Student(models.Model):
         )
 
     def get_new_entry_nr():
-        return Student.objects.all().order_by("-entry_nr")[0].entry_nr+1;
+        existing = Student.objects.all().order_by("-entry_nr");
+        if len(existing)>0:
+            return existing[0].entry_nr+1;
+        return 1;
 
     entry_nr = models.IntegerField(_("Entry #"), blank=True, null=True, unique=True, default=get_new_entry_nr)
     status = models.CharField(_("Status"), max_length=32, blank=True, null=True, choices=STATUS_CHOICES)

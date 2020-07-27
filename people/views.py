@@ -101,7 +101,7 @@ def students_csv(request, status="active"):
 	writer = csv.writer(response)
 
 	writer.writerow(["SchülerInnen mit Status '"+status+"'", "Stand:", "---"]);
-	writer.writerow(["Name", "Vorname", "Geburtsdatum", "Strasse", "Ort", "Erziehungsberechtigte"])
+	writer.writerow(["Name", "Vorname", "Geburtsdatum", "Klassenstufe", "Strasse", "Ort", "Erziehungsberechtigte"])
 
 	for student in Student.objects.all().filter(status=status):
 		guardian_names = [];
@@ -115,12 +115,29 @@ def students_csv(request, status="active"):
 
 		guardian_names.reverse()
 
-		writer.writerow([student.name, student.first_name, student.dob.strftime("%d.%m.%Y"), 
+
+		writer.writerow([student.name, student.first_name, student.dob.strftime("%d.%m.%Y"), calc_level(student,date.today()),
 			student.address.street, student.address.postal_code+" "+student.address.city,
 			" und ".join(guardian_names)])
 
 	return response;
 
+
+@login_required
+def society_csv(request):
+	response = HttpResponse(content_type="text/csv")
+	response["Content-Disposition"] = "attachment;filename=list.csv"
+
+	writer = csv.writer(response)
+
+	writer.writerow(["Name", "Vorname", "Strasse", "Ort", "Land", "E-Mail"])
+
+	for person in Contact.objects.all().filter(is_societymember=True):
+		writer.writerow([person.name, person.first_name, 
+			person.address.street, person.address.postal_code+" "+person.address.city,
+			])
+
+	return response;
 
 
 from datetime import date, datetime
